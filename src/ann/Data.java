@@ -318,7 +318,12 @@ public class Data extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Tampil Berdasarkan");
 
-        comboSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Data Latih", "Data Uji" }));
+        comboSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semua Data", "Data Latih", "Data Uji" }));
+        comboSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSortActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -400,6 +405,16 @@ public class Data extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tableDataMouseClicked
 
+    private void comboSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSortActionPerformed
+        String kategori = (String) comboSort.getSelectedItem();
+        
+        if (kategori == "Semua Data") {
+            getAllData();
+        } else {
+            getSelectedData(kategori);
+        }
+    }//GEN-LAST:event_comboSortActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -467,6 +482,7 @@ public class Data extends javax.swing.JFrame {
     }
     
     private void resetField() {
+        textId.setText("");
         textTahun.setText("");
         textT1.setText("");
         textT2.setText("");
@@ -493,7 +509,7 @@ public class Data extends javax.swing.JFrame {
             stm.executeUpdate("insert into tb_data values('"+id+"','"+
                     tahun+"','"+t5+"','"+t4+"','"+t3+"','"+t2+"','"+t1+"','"+t+"','"+kategori+"')");
             stm.close();
-            JOptionPane.showMessageDialog(rootPane, "Data Disimpan");
+            JOptionPane.showMessageDialog(rootPane, "Data tahun "+tahun+" berhasil disimpan");
             getAllData();
             resetField();
         } catch (SQLException e) {
@@ -536,22 +552,25 @@ public class Data extends javax.swing.JFrame {
             tbData.insertRow(row, obj);
             
             stm.close();
-            JOptionPane.showMessageDialog(rootPane, "Data Diedit");
+            JOptionPane.showMessageDialog(rootPane, "Data tahun "+tahun+" berhasil diubah");
+            resetField();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Gagal Diedit\n"+e.toString());
+            JOptionPane.showMessageDialog(rootPane, "Data Gagal Diubah\n"+e.toString());
         }
     }
     
     private void deleteData() {
         String id_data = String.valueOf(tableData.getValueAt(tableData.getSelectedRow(), 0));
+        String tahun = String.valueOf(tableData.getValueAt(tableData.getSelectedRow(), 1));
         
         try {
             Statement stm;
             stm = Connect.getConn().createStatement();
             stm.executeUpdate("delete from tb_data where id_data = '"+id_data+"'");
             stm.close();
-            JOptionPane.showMessageDialog(rootPane, "Data Dihapus");
+            JOptionPane.showMessageDialog(rootPane, "Data tahun "+tahun+" berhasil dihapus");
             getAllData();
+            resetField();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Gagal Dihapus\n"+e.toString());
         }
