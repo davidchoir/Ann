@@ -408,7 +408,7 @@ public class Data extends javax.swing.JFrame {
     private void comboSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSortActionPerformed
         String kategori = (String) comboSort.getSelectedItem();
         
-        if (kategori == "Semua Data") {
+        if ("Semua Data".equals(kategori)) {
             getAllData();
         } else {
             getSelectedData(kategori);

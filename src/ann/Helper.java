@@ -60,6 +60,23 @@ public class Helper {
         return count;
     }
     
+    public int countRecords(String kategori) {
+        int count = 0;
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl = stm.executeQuery("select count(*) from tb_data where kategori_data = '"+kategori+"'");
+            
+            while (rsl.next()) {
+                count = rsl.getInt(1);
+            }
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Gagal : "+e);
+        }
+        return count;
+    }
+    
     public void writeBobotHidden(double a[][], int x, int y){
         String teks = "";
         String path = "d:/bobot/bobothidden.txt";
