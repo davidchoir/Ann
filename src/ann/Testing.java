@@ -5,6 +5,11 @@
  */
 package ann;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DecimalFormat;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,6 +34,214 @@ public class Testing extends javax.swing.JFrame {
         tbDataPrediksi.addColumn("Target");
         tbDataPrediksi.addColumn("Prediksi");
         tbDataPrediksi.addColumn("Selisih");
+    }
+    
+    private void test() {
+        String kategori = (String) comboKategori.getSelectedItem();
+        tbDataPrediksi.getDataVector().removeAllElements();
+        tbDataPrediksi.fireTableDataChanged();
+        DecimalFormat df = new DecimalFormat("#.##");
+        
+        Helper helper = new Helper();
+        int countRecords = helper.countRecords();
+        double setting[] = helper.readSetting();
+        
+        double nilai_max = setting[2];
+        double nilai_min = setting[1];
+        double neuron_hidden = setting[0];
+        int neuron_output = 1;
+        int neuron_input = 5;
+        double selisih[] = new double[50];
+        double rataSelisih = 0;
+        
+        double xNorm[][] = new double[50][50];
+        double x[][] = new double[50][50];
+        double t[] = new double[50];
+        double prediksi[] = new double[50];
+        
+        double v[][] = helper.readBobotHidden(neuron_hidden, neuron_input);
+        double vb[] = helper.readBiasHidden();
+        double w[][] = helper.readBobotOutput(neuron_output, neuron_hidden);
+        double wb[] = helper.readBiasOutput();
+        
+        if ("Semua Data".equals(kategori)) {
+            countRecords = helper.countRecords();
+        } else {
+            countRecords = helper.countRecords(kategori);
+        }
+        
+        int n = 0;
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            // ResultSet rsl = stm.executeQuery("select * from tb_data");
+            ResultSet rsl;
+            if ("Semua Data".equals(kategori)) {
+                rsl = stm.executeQuery("select * from tb_data");
+            } else {
+                rsl = stm.executeQuery("select * from tb_data where kategori_data = '"+kategori+"'");
+            }
+            
+            while (rsl.next()) {
+                xNorm[n][0] = rsl.getDouble("t5");
+                xNorm[n][1] = rsl.getDouble("t4");
+                xNorm[n][2] = rsl.getDouble("t3");
+                xNorm[n][3] = rsl.getDouble("t2");
+                xNorm[n][4] = rsl.getDouble("t1");
+                xNorm[n][5] = rsl.getDouble("target_data");
+                n++;
+            }
+        
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal"+e);
+        }
+        
+        for (int i = 0; i < countRecords; i++) {
+            for (int j = 0; j < 6; j++) {
+                x[i][j] = ((0.8*(xNorm[i][j]-nilai_min))/(nilai_max-nilai_min))+0.1;
+                t[i] = xNorm[i][5];
+            }
+        }
+        
+        for (int i = 0; i < countRecords; i++) {
+            double hasil = 0;
+            
+            double z[] = new double[10];
+            for (int j = 0; j < neuron_hidden; j++) {
+                double z_net[] = new double[10];
+                double temp = 0;
+                for (int k = 0; k < neuron_input; k++) {
+                    // System.out.println(v[i][j]);
+                    temp = temp + (x[i][k] * v[k][j]);
+                    // System.out.println(x[i][k]+" "+v[k][j]);
+                }
+                z_net[j] = vb[j] + temp;
+                z[j] = 1/(1+(Math.exp(-z_net[j])));
+            }
+            
+            double y[] = new double[10];
+            for (int j = 0; j < neuron_output; j++) {
+                double y_net[] = new double[10];
+                double temp = 0;
+
+                for (int k = 0; k < neuron_hidden; k++) {
+                    temp = temp + (z[k] * w[j][k]);
+                }
+                y_net[j] = wb[j] + temp;
+                y[j] = 1/(1+(Math.exp(-y_net[j])));
+                
+                hasil = (((y[j])*(nilai_max-nilai_min)))+(0.8*nilai_min);
+                
+            }
+            prediksi[i] = hasil;
+            selisih[i] = Math.abs(hasil - t[i]);
+            rataSelisih = rataSelisih + selisih[i];
+            
+            System.out.println(hasil+" - "+t[i]+" = "+selisih[i]);
+        }
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            // ResultSet rsl = stm.executeQuery("select * from tb_data");
+            ResultSet rsl;
+            if ("Semua Data".equals(kategori)) {
+                rsl = stm.executeQuery("select * from tb_data");
+            } else {
+                rsl = stm.executeQuery("select * from tb_data where kategori_data = '"+kategori+"'");
+            }
+            
+            int count = 0;
+            
+            while (rsl.next()) {
+                Object[] obj = new Object[4];
+                
+                obj[0] = rsl.getString("tahun_data");
+                obj[1] = rsl.getString("target_data");
+                obj[2] = df.format(prediksi[count]);
+                obj[3] = df.format(selisih[count]);
+                
+                tbDataPrediksi.addRow(obj);
+                count++;
+            }
+            
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
+        }
+        
+        rataSelisih = rataSelisih/countRecords;
+        labelSelisih.setText(String.valueOf(df.format(rataSelisih)));
+    }
+    
+    private void predict() {
+        double xNorm[][] = new double[10][10];
+        xNorm[0][0] = Double.parseDouble(textT5.getText());
+        xNorm[0][1] = Double.parseDouble(textT4.getText());
+        xNorm[0][2] = Double.parseDouble(textT3.getText());
+        xNorm[0][3] = Double.parseDouble(textT2.getText());
+        xNorm[0][4] = Double.parseDouble(textT1.getText());
+        
+        Helper helper = new Helper();
+
+        double setting[] = helper.readSetting();
+        
+        double nilai_max = setting[2];
+        double nilai_min = setting[1];
+        double neuron_hidden = setting[0];
+        int neuron_output = 1;
+        int neuron_input = 5;
+        double hasil;
+        
+        double x[][] = new double[10][10];
+        
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 5; j++) {
+                x[i][j] = ((0.8*(xNorm[i][j]-nilai_min))/(nilai_max-nilai_min))+0.1;
+            }
+        }
+        
+        double v[][] = helper.readBobotHidden(neuron_hidden, neuron_input);
+        double vb[] = helper.readBiasHidden();
+        double w[][] = helper.readBobotOutput(neuron_output, neuron_hidden);
+        double wb[] = helper.readBiasOutput();
+        
+        DecimalFormat df = new DecimalFormat("#.##");
+        
+        for (int i = 0; i < 1; i++) {
+            
+            double z[] = new double[10];
+            for (int j = 0; j < neuron_hidden; j++) {
+                double z_net[] = new double[10];
+                double temp = 0;
+                for (int k = 0; k < neuron_input; k++) {
+                    // System.out.println(v[i][j]);
+                    temp = temp + (x[i][k] * v[k][j]);
+                    // System.out.println(x[i][k]+" "+v[k][j]);
+                }
+                z_net[j] = vb[j] + temp;
+                z[j] = 1/(1+(Math.exp(-z_net[j])));
+            }
+            
+            double y[] = new double[10];
+            for (int j = 0; j < neuron_output; j++) {
+                double y_net[] = new double[10];
+                double temp = 0;
+
+                for (int k = 0; k < neuron_hidden; k++) {
+                    temp = temp + (z[k] * w[j][k]);
+                }
+                y_net[j] = wb[j] + temp;
+                y[j] = 1/(1+(Math.exp(-y_net[j])));
+                
+                // double hasil = (((y[j])*(str.nilai_max-str.nilai_min)))+(0.8*str.nilai_min);
+                // hasil = (((y[j])*(77-69)))+(0.8*69);
+                hasil = (((y[j])*(nilai_max-nilai_min)))+(0.8*nilai_min);
+                
+                labelPrediksi.setText(String.valueOf(df.format(hasil)));
+            }
+        }
     }
 
     /**
@@ -113,6 +326,11 @@ public class Testing extends javax.swing.JFrame {
         comboKategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semua Data", "Data Latih", "Data Uji" }));
 
         buttonUji.setText("Uji");
+        buttonUji.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonUjiActionPerformed(evt);
+            }
+        });
 
         buttonReset.setText("Reset");
 
@@ -202,6 +420,11 @@ public class Testing extends javax.swing.JFrame {
         jLabel9.setText("T1");
 
         buttonPrediksi.setText("Prediksi");
+        buttonPrediksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPrediksiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -271,7 +494,7 @@ public class Testing extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Selisih");
+        jLabel10.setText("Selisih rata-rata");
 
         labelSelisih.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         labelSelisih.setForeground(new java.awt.Color(255, 255, 255));
@@ -367,6 +590,14 @@ public class Testing extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonUjiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUjiActionPerformed
+        test();
+    }//GEN-LAST:event_buttonUjiActionPerformed
+
+    private void buttonPrediksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPrediksiActionPerformed
+        predict();
+    }//GEN-LAST:event_buttonPrediksiActionPerformed
 
     /**
      * @param args the command line arguments
