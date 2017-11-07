@@ -118,12 +118,6 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="buttonUbah" max="32767" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="buttonHapus" min="-2" pref="111" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="buttonSimpan" min="-2" pref="231" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -148,10 +142,21 @@
                                           <Component id="textT1" max="32767" attributes="0"/>
                                           <Component id="textTarget" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="textId" max="32767" attributes="0"/>
+                                      <Component id="textId" pref="137" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jSeparator1" alignment="1" min="-2" pref="219" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="buttonUbah" max="32767" attributes="0"/>
+                                      <Component id="buttonTambah" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="buttonSimpan" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
+                                      <Component id="buttonHapus" min="-2" pref="111" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -216,7 +221,10 @@
                       <Component id="textTarget" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="buttonSimpan" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="buttonSimpan" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="buttonTambah" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="buttonHapus" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -454,6 +462,14 @@
               <Font name="Calibri" size="14" style="0"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonTambah">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tambah"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonTambahActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

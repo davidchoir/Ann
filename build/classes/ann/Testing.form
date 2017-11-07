@@ -503,7 +503,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Selisih rata-rata"/>
+            <Property name="text" type="java.lang.String" value="Akurasi rata-rata"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSelisih">

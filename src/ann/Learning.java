@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.concurrent.ThreadLocalRandom;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -62,6 +63,8 @@ public class Learning extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         textLearningRate = new javax.swing.JTextField();
         buttonReset = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
+        comboAktivasi = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -117,7 +120,7 @@ public class Learning extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Hidden Layer");
+        jLabel4.setText("Neuron Hidden");
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -180,6 +183,17 @@ public class Learning extends javax.swing.JFrame {
             }
         });
 
+        jLabel15.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("Aktivasi");
+
+        comboAktivasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sigmoid Biner", "Sigmoid Bipolar" }));
+        comboAktivasi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboAktivasiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -197,33 +211,42 @@ public class Learning extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(60, 60, 60)
+                                .addComponent(comboAktivasi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(textTampilIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(progressBarLearning, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4))
-                                .addGap(19, 19, 19)
+                                .addGap(11, 11, 11)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comboKategori, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(textHiddenLayer)))
+                                    .addComponent(textHiddenLayer)
+                                    .addComponent(comboKategori, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jLabel13))
+                                .addGap(80, 80, 80)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelMse)
+                                    .addComponent(labelIterasi))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(progressBarLearning, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGap(58, 58, 58)
                                         .addComponent(jLabel11))
-                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel12)
-                                            .addComponent(jLabel13))
-                                        .addGap(80, 80, 80)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(labelMse)
-                                            .addComponent(labelIterasi)))))
+                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(buttonLatih, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
@@ -233,11 +256,7 @@ public class Learning extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(textTargetError)
                                     .addComponent(textLearningRate)
-                                    .addComponent(textEpoch)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(buttonLatih, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(textEpoch))))
                         .addGap(19, 19, 19))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -271,17 +290,21 @@ public class Learning extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(textTampilIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonLatih)
                     .addComponent(buttonReset))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(progressBarLearning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(labelIterasi))
@@ -289,23 +312,23 @@ public class Learning extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(labelMse))
-                .addGap(21, 21, 21))
+                .addGap(14, 14, 14))
         );
 
         jPanel3.setBackground(new java.awt.Color(0, 171, 169));
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Proses Input Layer");
+        jLabel9.setText("Input - Hidden Layer");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
                 .addComponent(jLabel9)
-                .addGap(46, 46, 46))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,7 +342,7 @@ public class Learning extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Proses Hidden Layer");
+        jLabel2.setText("Hidden - Output Layer");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -328,7 +351,7 @@ public class Learning extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(35, 35, 35))
+                .addGap(25, 25, 25))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -436,13 +459,27 @@ public class Learning extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonLatihActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLatihActionPerformed
-        resetData();
-        learningData();
+        String aktivasi = (String) comboAktivasi.getSelectedItem();
+        
+        if ("Sigmoid Biner".equals(aktivasi)) {
+            resetData();
+            learningData();
+        } else if ("Sigmoid Bipolar".equals(aktivasi)) {
+            resetData();
+            aktivasiBipolar();
+        }
+        
+        // resetData();
+        // learningData();
     }//GEN-LAST:event_buttonLatihActionPerformed
 
     private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
         resetData();
     }//GEN-LAST:event_buttonResetActionPerformed
+
+    private void comboAktivasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAktivasiActionPerformed
+        // TO DO Something
+    }//GEN-LAST:event_comboAktivasiActionPerformed
 
     private void learningData() {
         // var data learning
@@ -513,23 +550,45 @@ public class Learning extends javax.swing.JFrame {
             }
         }
         
+        // Random bobot
         for (int j = 0; j < neuron_hidden; j++) {
             for (int k = 0; k < neuron_input; k++) {
-                v[j][k] = Math.random();
+                v[j][k] = ThreadLocalRandom.current().nextDouble(0, 1);
                 // System.out.println("Bobot = "+v[j][k]);
             }
-            vb[j] = Math.random();
+            vb[j] = ThreadLocalRandom.current().nextDouble(0, 1);
             // System.out.println("Bias = "+vb[j]);
         }
         
         for (int j = 0; j < neuron_output; j++) {
             for (int k = 0; k < neuron_hidden; k++) {
-                w[j][k] = Math.random();
+                w[j][k] = ThreadLocalRandom.current().nextDouble(0, 1);
                 // System.out.println("Bobot = "+w[j][k]);
             }
-            wb[j] = Math.random();
+            wb[j] = ThreadLocalRandom.current().nextDouble(0, 1);
             // System.out.println("Bias = "+wb[j]);
         }
+        
+        /*
+        // Random bobot
+        for (int j = 0; j < neuron_hidden; j++) {
+            for (int k = 0; k < neuron_input; k++) {
+                v[j][k] = Math.random();
+                System.out.println("Bobot = "+v[j][k]);
+            }
+            vb[j] = Math.random();
+            System.out.println("Bias = "+vb[j]);
+        }
+        
+        for (int j = 0; j < neuron_output; j++) {
+            for (int k = 0; k < neuron_hidden; k++) {
+                w[j][k] = Math.random();
+                System.out.println("Bobot = "+w[j][k]);
+            }
+            wb[j] = Math.random();
+            System.out.println("Bias = "+wb[j]);
+        }
+        */
         
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         
@@ -734,6 +793,306 @@ public class Learning extends javax.swing.JFrame {
 //        textTargetError.setText("");
     }
     
+    private void aktivasiBipolar(){
+        // var data learning
+        double x[][] = new double[50][50];
+        double xNorm[][] = new double[50][50];
+        double v[][] = new double[100][100];
+        double vb[] = new double[100];
+        double w[][] = new double[100][100];
+        double wb[] = new double[100];
+        double t[] = new double[50];
+        
+        // initialize
+        int n = 0;
+        int countRecords;
+        
+        // var data setting
+        double lr = Double.parseDouble(textLearningRate.getText());
+        int neuron_hidden = Integer.parseInt(textHiddenLayer.getText());
+        int neuron_output = 1;
+        int neuron_input = 5;
+        int loop = 0;
+        int epoch = Integer.parseInt(textEpoch.getText());
+        double target_error = Double.parseDouble(textTargetError.getText());
+        double last_mse;
+        
+        String kategori = (String) comboKategori.getSelectedItem();
+        DecimalFormat df = new DecimalFormat("#.####");
+        int iterasi = Integer.parseInt(textTampilIterasi.getText());
+        Helper help = new Helper();
+        countRecords = 0;
+        
+        if ("Semua Data".equals(kategori)) {
+            countRecords = help.countRecords();
+        } else {
+            countRecords = help.countRecords(kategori);
+        }
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            // ResultSet rsl = stm.executeQuery("select * from tb_data");
+            ResultSet rsl;
+            if ("Semua Data".equals(kategori)) {
+                rsl = stm.executeQuery("select * from tb_data");
+            } else {
+                rsl = stm.executeQuery("select * from tb_data where kategori_data = '"+kategori+"'");
+            }
+            
+            while (rsl.next()) {
+                xNorm[n][0] = rsl.getDouble("t5");
+                xNorm[n][1] = rsl.getDouble("t4");
+                xNorm[n][2] = rsl.getDouble("t3");
+                xNorm[n][3] = rsl.getDouble("t2");
+                xNorm[n][4] = rsl.getDouble("t1");
+                xNorm[n][5] = rsl.getDouble("target_data");
+                n++;
+            }
+        
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil data\n"+e);
+        }
+        
+        for (int i = 0; i < countRecords; i++) {
+            for (int j = 0; j < 6; j++) {
+                x[i][j] = ((xNorm[i][j]-help.nilaiMin(xNorm, countRecords))*(1-(-1))/(help.nilaiMax(xNorm, countRecords)-help.nilaiMin(xNorm, countRecords)))-1;
+                t[i] = x[i][5];
+            }
+        }
+        
+        // Random bobot
+        for (int j = 0; j < neuron_hidden; j++) {
+            for (int k = 0; k < neuron_input; k++) {
+                v[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
+                System.out.println("Bobot = "+v[j][k]);
+            }
+            vb[j] = ThreadLocalRandom.current().nextDouble(-1, 1);
+            System.out.println("Bias = "+vb[j]);
+        }
+        
+        for (int j = 0; j < neuron_output; j++) {
+            for (int k = 0; k < neuron_hidden; k++) {
+                w[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
+                System.out.println("Bobot = "+w[j][k]);
+            }
+            wb[j] = ThreadLocalRandom.current().nextDouble(-1, 1);
+            System.out.println("Bias = "+wb[j]);
+        }
+        
+        /*
+        // Random bobot
+        for (int j = 0; j < neuron_hidden; j++) {
+            for (int k = 0; k < neuron_input; k++) {
+                v[j][k] = Math.random();
+                System.out.println("Bobot = "+v[j][k]);
+            }
+            vb[j] = Math.random();
+            System.out.println("Bias = "+vb[j]);
+        }
+        
+        for (int j = 0; j < neuron_output; j++) {
+            for (int k = 0; k < neuron_hidden; k++) {
+                w[j][k] = Math.random();
+                System.out.println("Bobot = "+w[j][k]);
+            }
+            wb[j] = Math.random();
+            System.out.println("Bias = "+wb[j]);
+        }
+        */
+        
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        do {
+            double temp_mse[] = new double[50];
+            double mse = 0;
+            
+            // view step by step
+            textAreaMse.update(textAreaMse.getGraphics());
+            textAreaInput.update(textAreaInput.getGraphics());
+            textAreaHidden.update(textAreaHidden.getGraphics());
+            textAreaZ.update(textAreaZ.getGraphics());
+            textAreaY.update(textAreaY.getGraphics());
+            
+            for (int i = 0; i < countRecords; i++) {
+                
+                // Input layer
+                double z[] = new double[10];
+                for (int j = 0; j < neuron_hidden; j++) {
+                    double z_net[] = new double[10];
+                    double temp = 0;
+                    for (int k = 0; k < neuron_input; k++) {
+                        temp = temp + (x[i][k] * v[k][j]);
+                        // System.out.println(i+" "+k+" = "+x[i][k]);
+                    }
+                    // Hasil z_net + bias
+                    z_net[j] = vb[j] + temp;
+                    // System.out.println("z_net["+j+"] = "+z_net[j]);
+
+                    // Hasil z dengan aktivasi sigmoid bipolar
+                    z[j] = (2/(1+(Math.exp(-z_net[j]))))-1;
+                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                        textAreaZ.append("Nilai z["+j+"] = "+df.format(z[j])+"\n");
+                    }
+                    // System.out.println("z["+j+"] = "+z[j]);
+                }
+                if ((loop % iterasi) == 0) {
+                    textAreaZ.append("---------------------------------------\n");
+                }
+
+                // Output layer
+                double y[] = new double[10];
+                for (int j = 0; j < neuron_output; j++) {
+                    double y_net[] = new double[10];
+                    double temp = 0;
+
+                    for (int k = 0; k < neuron_hidden; k++) {
+                        temp = temp + (z[k] * w[j][k]);
+                    }
+                    y_net[j] = wb[j] + temp;
+                    y[j] = (2/(1+(Math.exp(-y_net[j]))))-1;
+                    
+                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                        textAreaY.append("Nilai y = "+df.format(y[j])+"\n");
+                    }
+                    temp_mse[i] = Math.pow((y[j]-t[i]), 2)/countRecords;
+                }
+                
+                mse = mse + temp_mse[i];
+
+                // Error y dan delta w
+                double error_y[] = new double[10];
+                double Aw[][] = new double[10][10];
+                double Awb[] = new double[10];
+
+                for (int j = 0; j < neuron_output; j++) {
+                    // Error y
+                    error_y[j] = (t[i] - y[j]) * ((1 + y[j]) * (1 - y[j])/2);
+                    // System.out.println("Error output = "+error_y[j]);
+
+                    for (int k = 0; k < neuron_hidden; k++) {
+                        // Delta bobot
+                        Aw[j][k] = lr * error_y[j] * z[k];
+                        // System.out.println("Aw["+j+"]["+k+"] = "+Aw[j][k]);
+                    }
+                    // Delta bobot bias
+                    Awb[j] = lr * error_y[j];
+                    // System.out.println("Awb["+j+"] = "+Awb[j]);
+                }
+
+                // Error y_net
+                double error_ynet[] = new double[10];
+                double error_z[] = new double[10];
+                double Av[][] = new double[10][10];
+                double Avb[] = new double[10];
+
+                for (int j = 0; j < neuron_hidden; j++) {
+                    for (int k = 0; k < neuron_output; k++) {
+                        // faktor kesalahan y_net
+                        error_ynet[j] = error_y[k] * w[k][j];
+                        // System.out.println("Error y_net = "+error_ynet[j]);
+                    }
+                    // faktor kesalahan z
+                    error_z[j] = error_ynet[j] * ((1 + y[j]) * (1 - y[j])/2);
+                    // System.out.println("Error z = "+error_z[j]);
+
+                    for (int k = 0; k < neuron_input; k++) {
+                        // Suku perubahan bobot hidden
+                        Av[k][j] = lr * error_z[j] * x[i][k];
+                    }
+                    // Suku perubahan bobot bias
+                    Avb[j] = lr * error_z[j];
+                    // System.out.println("Av["+j+"] = "+Avb[j]);
+                }
+
+                // update bobot output
+                for (int j = 0; j < neuron_output; j++) {
+                    for (int k = 0; k < neuron_hidden; k++) {
+                        // update z
+                        w[j][k] = w[j][k] + Aw[j][k];
+                        // System.out.println("Bobot output = "+Aw[j][k]+" = "+w[j][k]);
+                        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                            textAreaHidden.append("Bobot output["+j+"]["+k+"] = "+df.format(w[j][k])+"\n");
+                        }
+                        help.writeBobotOutput(w, neuron_output, neuron_hidden);
+                    }
+                    // update bias
+                    wb[j] = wb[j] + Awb[j];
+                    // System.out.println("Bias Output = "+Awb[j]+" = "+wb[j]);
+                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                        textAreaHidden.append("Bias Output["+j+"] = "+df.format(wb[j])+"\n---------------------------------------\n");
+                    }
+                    help.writeBiasOutput(wb, neuron_output);
+                }
+                
+                // update bobot hidden
+                for (int j = 0; j < neuron_hidden; j++) {
+                    for (int k = 0; k < neuron_input; k++) {
+                        // update z
+                        v[k][j] = v[k][j] + Av[k][j];
+                        // System.out.println("Bobot Hidden = "+Av[k][j]+" = "+v[k][j]);
+                        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                            textAreaInput.append("Bobot Hidden["+k+"]["+j+"] = "+df.format(v[k][j])+"\n");
+                        }
+                        help.writeBobotHidden(v, neuron_hidden, neuron_input);
+                    }
+                    // update bias
+                    vb[j] = vb[j] + Avb[j];
+                    // System.out.println("Bias Hidden = "+Avb[j]+" = "+vb[j]);
+                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                        textAreaInput.append("Bias Hidden["+j+"] = "+df.format(vb[j])+"\n----------------------------------------\n");
+                    }
+                    help.writeBiasHidden(vb, neuron_hidden);
+                }
+            // Akhir for i
+            }
+        
+        // System.out.println("MSE "+loop+" = "+mse);
+        
+        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+            textAreaMse.append("MSE ["+loop+"] = "+df.format(mse)+"\n");
+            textAreaInput.append("Epoch ["+loop+"]\n======================\n");
+            textAreaHidden.append("Epoch ["+loop+"]\n======================\n");
+            textAreaZ.append("Epoch ["+loop+"]\n======================\n");
+            textAreaY.append("-----------------------\nEpoch ["+loop+"]\n======================\n");
+        }
+        
+        last_mse = mse;
+        loop++;
+        
+        // for graph
+        dataset.setValue(new Double(mse), "Values", new Integer(loop));
+        
+        // progress bar
+        int learningProgress = (loop/epoch) * 100;
+        progressBarLearning.setValue(learningProgress);
+        
+        } while (loop < epoch && target_error < last_mse);
+        System.out.println();
+        // System.out.println("Last MSE = "+last_mse);
+        // System.out.println("Epoch = "+loop);
+        labelIterasi.update(labelIterasi.getGraphics());
+        labelIterasi.setText(""+loop);
+        labelMse.setText(""+df.format(last_mse));
+        
+        JFreeChart chart = ChartFactory.createLineChart("Grafik MSE", "Epoch", "Nilai MSE", dataset);
+        
+        ChartFrame frame = new ChartFrame("Bar Chart", chart);
+        frame.setVisible(true);
+        frame.setSize(700,550);
+        
+        // save setting
+        double nilai_min = help.nilaiMin(xNorm, countRecords);
+        double nilai_max = help.nilaiMax(xNorm, countRecords);
+        double data[] = new double[3];
+        data[0] = neuron_hidden;
+        data[1] = nilai_min;
+        data[2] = nilai_max;
+        
+        help.writeSetting(data);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -772,6 +1131,7 @@ public class Learning extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonLatih;
     private javax.swing.JButton buttonReset;
+    private javax.swing.JComboBox<String> comboAktivasi;
     private javax.swing.JComboBox<String> comboKategori;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -779,6 +1139,7 @@ public class Learning extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

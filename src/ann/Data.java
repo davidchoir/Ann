@@ -77,6 +77,7 @@ public class Data extends javax.swing.JFrame {
         buttonUbah = new javax.swing.JButton();
         labelId = new javax.swing.JLabel();
         textId = new javax.swing.JTextField();
+        buttonTambah = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableData = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -201,6 +202,13 @@ public class Data extends javax.swing.JFrame {
         textId.setEditable(false);
         textId.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
 
+        buttonTambah.setText("Tambah");
+        buttonTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonTambahActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -210,11 +218,6 @@ public class Data extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(buttonUbah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(buttonSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
@@ -237,8 +240,16 @@ public class Data extends javax.swing.JFrame {
                                         .addComponent(textT2)
                                         .addComponent(textT1)
                                         .addComponent(textTarget))
-                                    .addComponent(textId)))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(textId, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buttonUbah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buttonSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
                         .addComponent(labelTitle)))
@@ -288,7 +299,9 @@ public class Data extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(textTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(buttonSimpan)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonSimpan)
+                    .addComponent(buttonTambah))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonHapus)
@@ -414,6 +427,10 @@ public class Data extends javax.swing.JFrame {
             getSelectedData(kategori);
         }
     }//GEN-LAST:event_comboSortActionPerformed
+
+    private void buttonTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTambahActionPerformed
+        tambahData();
+    }//GEN-LAST:event_buttonTambahActionPerformed
 
     /**
      * @param args the command line arguments
@@ -576,6 +593,29 @@ public class Data extends javax.swing.JFrame {
         }
     }
     
+    private void tambahData() {
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl = stm.executeQuery("select * from tb_data ORDER by tahun_data DESC LIMIT 0, 1");
+            
+            while (rsl.next()) {
+                textT1.setText(rsl.getString("target_data"));
+                textT2.setText(rsl.getString("t1"));
+                textT3.setText(rsl.getString("t2"));
+                textT4.setText(rsl.getString("t3"));
+                textT5.setText(rsl.getString("t4"));
+                
+                int tahun_data = 1 + rsl.getInt("tahun_data");
+                textTahun.setText(""+tahun_data);
+            }
+            
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
+        }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -611,6 +651,7 @@ public class Data extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonHapus;
     private javax.swing.JButton buttonSimpan;
+    private javax.swing.JButton buttonTambah;
     private javax.swing.JButton buttonUbah;
     private javax.swing.JComboBox<String> comboKategori;
     private javax.swing.JComboBox<String> comboSort;

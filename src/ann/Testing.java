@@ -33,7 +33,7 @@ public class Testing extends javax.swing.JFrame {
         tbDataPrediksi.addColumn("Tahun");
         tbDataPrediksi.addColumn("Target");
         tbDataPrediksi.addColumn("Prediksi");
-        tbDataPrediksi.addColumn("Selisih");
+        tbDataPrediksi.addColumn("Akurasi");
     }
     
     private void test() {
@@ -53,6 +53,9 @@ public class Testing extends javax.swing.JFrame {
         int neuron_input = 5;
         double selisih[] = new double[50];
         double rataSelisih = 0;
+        
+        double akurasi[] = new double[50];
+        double rataAkurasi = 0;
         
         double xNorm[][] = new double[50][50];
         double x[][] = new double[50][50];
@@ -138,7 +141,11 @@ public class Testing extends javax.swing.JFrame {
             selisih[i] = Math.abs(hasil - t[i]);
             rataSelisih = rataSelisih + selisih[i];
             
-            System.out.println(hasil+" - "+t[i]+" = "+selisih[i]);
+            akurasi[i] = (hasil/t[i] * 100);
+            rataAkurasi = rataAkurasi + akurasi[i];
+            
+            System.out.println(hasil+" / "+t[i]+" = "+akurasi[i]);
+            // System.out.println(hasil+" - "+t[i]+" = "+selisih[i]);
         }
         
         try {
@@ -159,7 +166,7 @@ public class Testing extends javax.swing.JFrame {
                 obj[0] = rsl.getString("tahun_data");
                 obj[1] = rsl.getString("target_data");
                 obj[2] = df.format(prediksi[count]);
-                obj[3] = df.format(selisih[count]);
+                obj[3] = df.format(akurasi[count])+"%";
                 
                 tbDataPrediksi.addRow(obj);
                 count++;
@@ -171,8 +178,12 @@ public class Testing extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
         }
         
-        rataSelisih = rataSelisih/countRecords;
-        labelSelisih.setText(String.valueOf(df.format(rataSelisih)));
+        // MAPE Akurasi
+        rataAkurasi = rataAkurasi/countRecords;
+        labelSelisih.setText(String.valueOf(df.format(rataAkurasi))+"%");
+        
+        // rataSelisih = rataSelisih/countRecords;
+        // labelSelisih.setText(String.valueOf(df.format(rataSelisih)));
     }
     
     private void predict() {
@@ -237,7 +248,10 @@ public class Testing extends javax.swing.JFrame {
                 
                 // double hasil = (((y[j])*(str.nilai_max-str.nilai_min)))+(0.8*str.nilai_min);
                 // hasil = (((y[j])*(77-69)))+(0.8*69);
-                hasil = (((y[j])*(nilai_max-nilai_min)))+(0.8*nilai_min);
+                // hasil = (((y[j])*(nilai_max-nilai_min)))+(0.8*nilai_min);
+                
+                // Denormalisasi bipolar
+                hasil = ((nilai_min*(1-(-1)))+((y[j]-(-1))*(nilai_max-nilai_min)))/(1-(-1));
                 
                 labelPrediksi.setText(String.valueOf(df.format(hasil)));
             }
@@ -494,7 +508,7 @@ public class Testing extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Selisih rata-rata");
+        jLabel10.setText("Akurasi rata-rata");
 
         labelSelisih.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         labelSelisih.setForeground(new java.awt.Color(255, 255, 255));
