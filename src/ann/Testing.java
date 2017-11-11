@@ -299,8 +299,6 @@ public class Testing extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         labelPrediksi = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBackground(new java.awt.Color(0, 171, 169));
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N

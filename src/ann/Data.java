@@ -8,6 +8,7 @@ package ann;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,25 +22,39 @@ public class Data extends javax.swing.JFrame {
      * Creates new form Data
      */
     private DefaultTableModel tbData;
+    private DefaultTableModel tbPreprocessing;
     private int row;
     
     public Data() {
         initComponents();
         
+        // Table Data
         tbData = new DefaultTableModel();
         
         tableData.setModel(tbData);
-        tbData.addColumn("ID");
         tbData.addColumn("Tahun");
-        tbData.addColumn("T5");
-        tbData.addColumn("T4");
-        tbData.addColumn("T3");
-        tbData.addColumn("T2");
-        tbData.addColumn("T1");
+        tbData.addColumn("T-5");
+        tbData.addColumn("T-4");
+        tbData.addColumn("T-3");
+        tbData.addColumn("T-2");
+        tbData.addColumn("T-1");
         tbData.addColumn("Target");
         tbData.addColumn("Kategori");
         
         getAllData();
+        
+        // Table Preprocessing
+        tbPreprocessing = new DefaultTableModel();
+        
+        tablePreprocessing.setModel(tbPreprocessing);
+        tbPreprocessing.addColumn("Tahun");
+        tbPreprocessing.addColumn("T-5");
+        tbPreprocessing.addColumn("T-4");
+        tbPreprocessing.addColumn("T-3");
+        tbPreprocessing.addColumn("T-2");
+        tbPreprocessing.addColumn("T-1");
+        tbPreprocessing.addColumn("Target");
+        tbPreprocessing.addColumn("Kategori");
     }
 
     /**
@@ -75,16 +90,18 @@ public class Data extends javax.swing.JFrame {
         buttonHapus = new javax.swing.JButton();
         buttonSimpan = new javax.swing.JButton();
         buttonUbah = new javax.swing.JButton();
-        labelId = new javax.swing.JLabel();
-        textId = new javax.swing.JTextField();
         buttonTambah = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableData = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         comboSort = new javax.swing.JComboBox<>();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        comboAktivasi = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablePreprocessing = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Data Latih dan Data Uji");
         setBackground(new java.awt.Color(44, 62, 80));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -131,23 +148,23 @@ public class Data extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("T5");
+        jLabel5.setText("T-5");
 
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("T4");
+        jLabel6.setText("T-4");
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("T3");
+        jLabel7.setText("T-3");
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("T2");
+        jLabel8.setText("T-2");
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("T1");
+        jLabel9.setText("T-1");
 
         jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -195,14 +212,8 @@ public class Data extends javax.swing.JFrame {
             }
         });
 
-        labelId.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        labelId.setForeground(new java.awt.Color(255, 255, 255));
-        labelId.setText("ID data");
-
-        textId.setEditable(false);
-        textId.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-
-        buttonTambah.setText("Tambah");
+        buttonTambah.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        buttonTambah.setText("Tambah Data");
         buttonTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonTambahActionPerformed(evt);
@@ -227,29 +238,24 @@ public class Data extends javax.swing.JFrame {
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel8)
                                     .addComponent(jLabel9)
-                                    .addComponent(jLabel10)
-                                    .addComponent(labelId))
+                                    .addComponent(jLabel10))
                                 .addGap(37, 37, 37)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(comboKategori, 0, 137, Short.MAX_VALUE)
-                                        .addComponent(textTahun)
-                                        .addComponent(textT5)
-                                        .addComponent(textT4)
-                                        .addComponent(textT3)
-                                        .addComponent(textT2)
-                                        .addComponent(textT1)
-                                        .addComponent(textTarget))
-                                    .addComponent(textId, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(comboKategori, 0, 137, Short.MAX_VALUE)
+                                    .addComponent(textTahun)
+                                    .addComponent(textT5)
+                                    .addComponent(textT4)
+                                    .addComponent(textT3)
+                                    .addComponent(textT2)
+                                    .addComponent(textT1)
+                                    .addComponent(textTarget)))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(buttonUbah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(buttonTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(buttonUbah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(buttonSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buttonTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buttonSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
                         .addComponent(labelTitle)))
@@ -262,11 +268,9 @@ public class Data extends javax.swing.JFrame {
                 .addComponent(labelTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelId)
-                    .addComponent(textId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonTambah)
+                .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(comboKategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -299,14 +303,12 @@ public class Data extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(textTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonSimpan)
-                    .addComponent(buttonTambah))
+                .addComponent(buttonSimpan)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonHapus)
                     .addComponent(buttonUbah))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tableData.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -359,6 +361,53 @@ public class Data extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
+        jPanel4.setBackground(new java.awt.Color(0, 171, 169));
+
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Proses Preprocessing");
+
+        comboAktivasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sigmoid Biner", "Sigmoid Bipolar" }));
+        comboAktivasi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboAktivasiActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(164, 164, 164)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        tablePreprocessing.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tablePreprocessing);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -367,10 +416,12 @@ public class Data extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -378,13 +429,18 @@ public class Data extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -406,15 +462,14 @@ public class Data extends javax.swing.JFrame {
         if(evt.getClickCount()==1) {
             row = tableData.getSelectedRow();
             
-            textId.setText(tableData.getValueAt(row, 0).toString());
-            textTahun.setText(tableData.getValueAt(row, 1).toString());
-            textT5.setText(tableData.getValueAt(row, 2).toString());
-            textT4.setText(tableData.getValueAt(row, 3).toString());
-            textT3.setText(tableData.getValueAt(row, 4).toString());
-            textT2.setText(tableData.getValueAt(row, 5).toString());
-            textT1.setText(tableData.getValueAt(row, 6).toString());
-            textTarget.setText(tableData.getValueAt(row, 7).toString());
-            comboKategori.setSelectedItem(tableData.getValueAt(row, 8).toString());
+            textTahun.setText(tableData.getValueAt(row, 0).toString());
+            textT5.setText(tableData.getValueAt(row, 1).toString());
+            textT4.setText(tableData.getValueAt(row, 2).toString());
+            textT3.setText(tableData.getValueAt(row, 3).toString());
+            textT2.setText(tableData.getValueAt(row, 4).toString());
+            textT1.setText(tableData.getValueAt(row, 5).toString());
+            textTarget.setText(tableData.getValueAt(row, 6).toString());
+            comboKategori.setSelectedItem(tableData.getValueAt(row, 7).toString());
         }
     }//GEN-LAST:event_tableDataMouseClicked
 
@@ -432,6 +487,17 @@ public class Data extends javax.swing.JFrame {
         tambahData();
     }//GEN-LAST:event_buttonTambahActionPerformed
 
+    private void comboAktivasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAktivasiActionPerformed
+        String kategori = (String) comboSort.getSelectedItem();
+        String aktivasi = (String) comboAktivasi.getSelectedItem();
+        
+        if ("Sigmoid Biner".equals(aktivasi)) {
+            getPreprocessingBiner(kategori);
+        } else if ("Sigmoid Bipolar".equals(aktivasi)) {
+            getPreprocessingBipolar(kategori);
+        }
+    }//GEN-LAST:event_comboAktivasiActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -442,20 +508,19 @@ public class Data extends javax.swing.JFrame {
         
         try {
             Statement stm = Connect.getConn().createStatement();
-            ResultSet rsl = stm.executeQuery("select * from tb_data");
+            ResultSet rsl = stm.executeQuery("select * from datas");
             
             while (rsl.next()) {
-                Object[] obj = new Object[9];
+                Object[] obj = new Object[8];
                 
-                obj[0] = rsl.getString("id_data");
-                obj[1] = rsl.getString("tahun_data");
-                obj[2] = rsl.getString("t5");
-                obj[3] = rsl.getString("t4");
-                obj[4] = rsl.getString("t3");
-                obj[5] = rsl.getString("t2");
-                obj[6] = rsl.getString("t1");
-                obj[7] = rsl.getString("target_data");
-                obj[8] = rsl.getString("kategori_data");
+                obj[0] = rsl.getString("tahun");
+                obj[1] = rsl.getString("t5");
+                obj[2] = rsl.getString("t4");
+                obj[3] = rsl.getString("t3");
+                obj[4] = rsl.getString("t2");
+                obj[5] = rsl.getString("t1");
+                obj[6] = rsl.getString("target");
+                obj[7] = rsl.getString("kategori");
                 
                 tbData.addRow(obj);
             }
@@ -473,20 +538,19 @@ public class Data extends javax.swing.JFrame {
         
         try {
             Statement stm = Connect.getConn().createStatement();
-            ResultSet rsl = stm.executeQuery("select * from tb_data where kategori_data = '"+kategori+"'");
+            ResultSet rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
             
             while (rsl.next()) {
-                Object[] obj = new Object[9];
+                Object[] obj = new Object[8];
                 
-                obj[0] = rsl.getString("id_data");
-                obj[1] = rsl.getString("tahun_data");
-                obj[2] = rsl.getString("t5");
-                obj[3] = rsl.getString("t4");
-                obj[4] = rsl.getString("t3");
-                obj[5] = rsl.getString("t2");
-                obj[6] = rsl.getString("t1");
-                obj[7] = rsl.getString("target_data");
-                obj[8] = rsl.getString("kategori_data");
+                obj[0] = rsl.getString("tahun");
+                obj[1] = rsl.getString("t5");
+                obj[2] = rsl.getString("t4");
+                obj[3] = rsl.getString("t3");
+                obj[4] = rsl.getString("t2");
+                obj[5] = rsl.getString("t1");
+                obj[6] = rsl.getString("target");
+                obj[7] = rsl.getString("kategori");
                 
                 tbData.addRow(obj);
             }
@@ -498,8 +562,167 @@ public class Data extends javax.swing.JFrame {
         }
     }
     
+    private void getPreprocessingBiner(String kategori) {
+        tbPreprocessing.getDataVector().removeAllElements();
+        tbPreprocessing.fireTableDataChanged();
+        
+        DecimalFormat df = new DecimalFormat("#.##");
+        Helper helper = new Helper();
+        int countRecords = helper.countRecords();
+        double xNorm[][] = new double[50][50];
+        double t5[] = new double[50];
+        double t4[] = new double[50];
+        double t3[] = new double[50];
+        double t2[] = new double[50];
+        double t1[] = new double[50];
+        double target[] = new double[50];
+        int count = 0;
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl;
+            if ("Semua Data".equals(kategori)) {
+                rsl = stm.executeQuery("select * from datas");
+            } else {
+                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
+            }
+            
+            while (rsl.next()) {
+                xNorm[count][0] = rsl.getDouble("t5");
+                xNorm[count][1] = rsl.getDouble("t4");
+                xNorm[count][2] = rsl.getDouble("t3");
+                xNorm[count][3] = rsl.getDouble("t2");
+                xNorm[count][4] = rsl.getDouble("t1");
+                xNorm[count][5] = rsl.getDouble("target");
+                count++;
+            }
+        
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil data\n"+e);
+        }
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl;
+            if ("Semua Data".equals(kategori)) {
+                rsl = stm.executeQuery("select * from datas");
+            } else {
+                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
+            }
+            
+            while (rsl.next()) {
+                Object[] obj = new Object[8];
+
+                t5[count] = ((0.8*(rsl.getDouble("t5")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
+                t4[count] = ((0.8*(rsl.getDouble("t4")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
+                t3[count] = ((0.8*(rsl.getDouble("t3")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
+                t2[count] = ((0.8*(rsl.getDouble("t2")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
+                t1[count] = ((0.8*(rsl.getDouble("t1")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
+                target[count] = ((0.8*(rsl.getDouble("target")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
+                
+                obj[0] = rsl.getString("tahun");
+                obj[1] = df.format(t5[count]);
+                obj[2] = df.format(t4[count]);
+                obj[3] = df.format(t3[count]);
+                obj[4] = df.format(t2[count]);
+                obj[5] = df.format(t1[count]);
+                obj[6] = df.format(target[count]);
+                obj[7] = rsl.getString("kategori");
+                
+                tbPreprocessing.addRow(obj);
+                count++;
+            }
+            
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
+        }
+    }
+    
+    private void getPreprocessingBipolar(String kategori) {
+        tbPreprocessing.getDataVector().removeAllElements();
+        tbPreprocessing.fireTableDataChanged();
+        
+        DecimalFormat df = new DecimalFormat("#.##");
+        Helper helper = new Helper();
+        int countRecords = helper.countRecords();
+        double xNorm[][] = new double[50][50];
+        double t5[] = new double[50];
+        double t4[] = new double[50];
+        double t3[] = new double[50];
+        double t2[] = new double[50];
+        double t1[] = new double[50];
+        double target[] = new double[50];
+        int count = 0;
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl;
+            if ("Semua Data".equals(kategori)) {
+                rsl = stm.executeQuery("select * from datas");
+            } else {
+                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
+            }
+            
+            while (rsl.next()) {
+                xNorm[count][0] = rsl.getDouble("t5");
+                xNorm[count][1] = rsl.getDouble("t4");
+                xNorm[count][2] = rsl.getDouble("t3");
+                xNorm[count][3] = rsl.getDouble("t2");
+                xNorm[count][4] = rsl.getDouble("t1");
+                xNorm[count][5] = rsl.getDouble("target");
+                count++;
+            }
+        
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil data\n"+e);
+        }
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl;
+            if ("Semua Data".equals(kategori)) {
+                rsl = stm.executeQuery("select * from datas");
+            } else {
+                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
+            }
+            
+            while (rsl.next()) {
+                Object[] obj = new Object[8];
+
+                t5[count] = ((rsl.getDouble("t5")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
+                t4[count] = ((rsl.getDouble("t4")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
+                t3[count] = ((rsl.getDouble("t3")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
+                t2[count] = ((rsl.getDouble("t2")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
+                t1[count] = ((rsl.getDouble("t1")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
+                target[count] = ((rsl.getDouble("target")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
+                
+                obj[0] = rsl.getString("tahun");
+                obj[1] = df.format(t5[count]);
+                obj[2] = df.format(t4[count]);
+                obj[3] = df.format(t3[count]);
+                obj[4] = df.format(t2[count]);
+                obj[5] = df.format(t1[count]);
+                obj[6] = df.format(target[count]);
+                obj[7] = rsl.getString("kategori");
+                
+                tbPreprocessing.addRow(obj);
+                count++;
+            }
+            
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
+        }
+    }
+    
     private void resetField() {
-        textId.setText("");
         textTahun.setText("");
         textT1.setText("");
         textT2.setText("");
@@ -523,7 +746,7 @@ public class Data extends javax.swing.JFrame {
         try {
             Statement stm;
             stm = Connect.getConn().createStatement();
-            stm.executeUpdate("insert into tb_data values('"+id+"','"+
+            stm.executeUpdate("insert into datas values('"+
                     tahun+"','"+t5+"','"+t4+"','"+t3+"','"+t2+"','"+t1+"','"+t+"','"+kategori+"')");
             stm.close();
             JOptionPane.showMessageDialog(rootPane, "Data tahun "+tahun+" berhasil disimpan");
@@ -535,7 +758,6 @@ public class Data extends javax.swing.JFrame {
     }
     
     private void updateData() {
-        String id = textId.getText();
         String tahun = textTahun.getText();
         double t5 = Double.parseDouble(textT5.getText());
         double t4 = Double.parseDouble(textT4.getText());
@@ -549,21 +771,20 @@ public class Data extends javax.swing.JFrame {
             Statement stm;
             stm = Connect.getConn().createStatement();
             
-            stm.executeUpdate("update tb_data set tahun_data = '"+tahun+"',t5 = '"+t5+"',t4 = '"+t4+"',t3 = '"+
-                    t3+"',t2 = '"+t2+"',t1 = '"+t1+"',target_data = '"+t+"',kategori_data = '"+kategori+
-                    "' where id_data = '"+id+"'");
+            stm.executeUpdate("update datas set t5 = '"+t5+"',t4 = '"+t4+"',t3 = '"+
+                    t3+"',t2 = '"+t2+"',t1 = '"+t1+"',target = '"+t+"',kategori = '"+kategori+
+                    "' where tahun = '"+tahun+"'");
             
-            Object[] obj = new Object[9];
+            Object[] obj = new Object[8];
             
-            obj[0]=textId.getText();
-            obj[1]=textTahun.getText();
-            obj[2]=textT1.getText();
-            obj[3]=textT2.getText();
-            obj[4]=textT3.getText();
-            obj[5]=textT2.getText();
-            obj[6]=textT1.getText();
-            obj[7]=textTarget.getText();
-            obj[8]=comboKategori.getSelectedItem();
+            obj[0]=textTahun.getText();
+            obj[1]=textT1.getText();
+            obj[2]=textT2.getText();
+            obj[3]=textT3.getText();
+            obj[4]=textT2.getText();
+            obj[5]=textT1.getText();
+            obj[6]=textTarget.getText();
+            obj[7]=comboKategori.getSelectedItem();
             
             tbData.removeRow(row);
             tbData.insertRow(row, obj);
@@ -577,13 +798,12 @@ public class Data extends javax.swing.JFrame {
     }
     
     private void deleteData() {
-        String id_data = String.valueOf(tableData.getValueAt(tableData.getSelectedRow(), 0));
-        String tahun = String.valueOf(tableData.getValueAt(tableData.getSelectedRow(), 1));
+        String tahun = String.valueOf(tableData.getValueAt(tableData.getSelectedRow(), 0));
         
         try {
             Statement stm;
             stm = Connect.getConn().createStatement();
-            stm.executeUpdate("delete from tb_data where id_data = '"+id_data+"'");
+            stm.executeUpdate("delete from datas where tahun = '"+tahun+"'");
             stm.close();
             JOptionPane.showMessageDialog(rootPane, "Data tahun "+tahun+" berhasil dihapus");
             getAllData();
@@ -596,16 +816,16 @@ public class Data extends javax.swing.JFrame {
     private void tambahData() {
         try {
             Statement stm = Connect.getConn().createStatement();
-            ResultSet rsl = stm.executeQuery("select * from tb_data ORDER by tahun_data DESC LIMIT 0, 1");
+            ResultSet rsl = stm.executeQuery("select * from datas ORDER by tahun DESC LIMIT 0, 1");
             
             while (rsl.next()) {
-                textT1.setText(rsl.getString("target_data"));
-                textT2.setText(rsl.getString("t1"));
-                textT3.setText(rsl.getString("t2"));
-                textT4.setText(rsl.getString("t3"));
-                textT5.setText(rsl.getString("t4"));
+                textT1.setText(rsl.getString("target"));
+                textT2.setText(rsl.getString("t-1"));
+                textT3.setText(rsl.getString("t-2"));
+                textT4.setText(rsl.getString("t-3"));
+                textT5.setText(rsl.getString("t-4"));
                 
-                int tahun_data = 1 + rsl.getInt("tahun_data");
+                int tahun_data = 1 + rsl.getInt("tahun");
                 textTahun.setText(""+tahun_data);
             }
             
@@ -653,10 +873,12 @@ public class Data extends javax.swing.JFrame {
     private javax.swing.JButton buttonSimpan;
     private javax.swing.JButton buttonTambah;
     private javax.swing.JButton buttonUbah;
+    private javax.swing.JComboBox<String> comboAktivasi;
     private javax.swing.JComboBox<String> comboKategori;
     private javax.swing.JComboBox<String> comboSort;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -667,13 +889,14 @@ public class Data extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelHeader;
-    private javax.swing.JLabel labelId;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JTable tableData;
-    private javax.swing.JTextField textId;
+    private javax.swing.JTable tablePreprocessing;
     private javax.swing.JTextField textT1;
     private javax.swing.JTextField textT2;
     private javax.swing.JTextField textT3;

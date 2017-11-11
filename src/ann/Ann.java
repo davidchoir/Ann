@@ -15,7 +15,7 @@ public class Ann {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new Learning().setVisible(true);
+        new Home().setVisible(true);
     }
     
 }

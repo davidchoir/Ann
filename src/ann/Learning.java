@@ -82,8 +82,6 @@ public class Learning extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         textAreaY = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBackground(new java.awt.Color(0, 171, 169));
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
@@ -233,8 +231,7 @@ public class Learning extends javax.swing.JFrame {
                                 .addGap(80, 80, 80)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelMse)
-                                    .addComponent(labelIterasi))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(labelIterasi)))
                             .addComponent(progressBarLearning, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -463,10 +460,10 @@ public class Learning extends javax.swing.JFrame {
         
         if ("Sigmoid Biner".equals(aktivasi)) {
             resetData();
-            learningData();
+            sigmoidBiner();
         } else if ("Sigmoid Bipolar".equals(aktivasi)) {
             resetData();
-            aktivasiBipolar();
+            sigmoidBipolar();
         }
         
         // resetData();
@@ -481,7 +478,7 @@ public class Learning extends javax.swing.JFrame {
         // TO DO Something
     }//GEN-LAST:event_comboAktivasiActionPerformed
 
-    private void learningData() {
+    private void sigmoidBiner() {
         // var data learning
         double x[][] = new double[50][50];
         double xNorm[][] = new double[50][50];
@@ -522,9 +519,9 @@ public class Learning extends javax.swing.JFrame {
             // ResultSet rsl = stm.executeQuery("select * from tb_data");
             ResultSet rsl;
             if ("Semua Data".equals(kategori)) {
-                rsl = stm.executeQuery("select * from tb_data");
+                rsl = stm.executeQuery("select * from datas");
             } else {
-                rsl = stm.executeQuery("select * from tb_data where kategori_data = '"+kategori+"'");
+                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
             }
             
             while (rsl.next()) {
@@ -533,7 +530,7 @@ public class Learning extends javax.swing.JFrame {
                 xNorm[n][2] = rsl.getDouble("t3");
                 xNorm[n][3] = rsl.getDouble("t2");
                 xNorm[n][4] = rsl.getDouble("t1");
-                xNorm[n][5] = rsl.getDouble("target_data");
+                xNorm[n][5] = rsl.getDouble("target");
                 n++;
             }
         
@@ -793,7 +790,7 @@ public class Learning extends javax.swing.JFrame {
 //        textTargetError.setText("");
     }
     
-    private void aktivasiBipolar(){
+    private void sigmoidBipolar(){
         // var data learning
         double x[][] = new double[50][50];
         double xNorm[][] = new double[50][50];
@@ -834,9 +831,9 @@ public class Learning extends javax.swing.JFrame {
             // ResultSet rsl = stm.executeQuery("select * from tb_data");
             ResultSet rsl;
             if ("Semua Data".equals(kategori)) {
-                rsl = stm.executeQuery("select * from tb_data");
+                rsl = stm.executeQuery("select * from datas");
             } else {
-                rsl = stm.executeQuery("select * from tb_data where kategori_data = '"+kategori+"'");
+                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
             }
             
             while (rsl.next()) {
@@ -845,7 +842,7 @@ public class Learning extends javax.swing.JFrame {
                 xNorm[n][2] = rsl.getDouble("t3");
                 xNorm[n][3] = rsl.getDouble("t2");
                 xNorm[n][4] = rsl.getDouble("t1");
-                xNorm[n][5] = rsl.getDouble("target_data");
+                xNorm[n][5] = rsl.getDouble("target");
                 n++;
             }
         
@@ -866,19 +863,19 @@ public class Learning extends javax.swing.JFrame {
         for (int j = 0; j < neuron_hidden; j++) {
             for (int k = 0; k < neuron_input; k++) {
                 v[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
-                System.out.println("Bobot = "+v[j][k]);
+                // System.out.println("Bobot = "+v[j][k]);
             }
             vb[j] = ThreadLocalRandom.current().nextDouble(-1, 1);
-            System.out.println("Bias = "+vb[j]);
+            // System.out.println("Bias = "+vb[j]);
         }
         
         for (int j = 0; j < neuron_output; j++) {
             for (int k = 0; k < neuron_hidden; k++) {
                 w[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
-                System.out.println("Bobot = "+w[j][k]);
+                // System.out.println("Bobot = "+w[j][k]);
             }
             wb[j] = ThreadLocalRandom.current().nextDouble(-1, 1);
-            System.out.println("Bias = "+wb[j]);
+            // System.out.println("Bias = "+wb[j]);
         }
         
         /*
