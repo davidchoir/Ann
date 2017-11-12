@@ -77,9 +77,9 @@ public class Helper {
         return count;
     }
     
-    public void writeBobotHidden(double a[][], int x, int y){
+    public void writeBobotHidden(double a[][], int x, int y, String aktivasi){
         String teks = "";
-        String path = "d:/bobot/bobothidden.txt";
+        String path = "d:/bobot/bobothidden"+aktivasi+".txt";
         
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -96,9 +96,9 @@ public class Helper {
         }
     }
     
-    public double[][] readBobotHidden(double a, int b){
+    public double[][] readBobotHidden(double a, int b, String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/bobothidden.txt");
+        File file = new File("d:/bobot/bobothidden"+aktivasi+".txt");
         
         double arr[] = new double[100];
         double x[][] = new double[100][100];
@@ -129,9 +129,9 @@ public class Helper {
         return x;
     }
     
-    public void writeBiasHidden(double a[], int n){
+    public void writeBiasHidden(double a[], int n, String aktivasi){
         String teks = "";
-        String path = "d:/bobot/biashidden.txt";
+        String path = "d:/bobot/biashidden"+aktivasi+".txt";
         
         for (int i = 0; i < n; i++) {
             teks = (teks+" ") + Double.toString(a[i]);
@@ -146,9 +146,9 @@ public class Helper {
         }
     }
     
-    public double[] readBiasHidden(){
+    public double[] readBiasHidden(String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/biashidden.txt");
+        File file = new File("d:/bobot/biashidden"+aktivasi+".txt");
         
         double arr[] = new double[100];
         int i = 0;
@@ -170,9 +170,9 @@ public class Helper {
     
     // Bobot Output
     
-    public void writeBobotOutput(double a[][], int x, int y){
+    public void writeBobotOutput(double a[][], int x, int y, String aktivasi){
         String teks = "";
-        String path = "d:/bobot/bobotoutput.txt";
+        String path = "d:/bobot/bobotoutput"+aktivasi+".txt";
         
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -189,9 +189,9 @@ public class Helper {
         }
     }
     
-    public double[][] readBobotOutput(int a, double b){
+    public double[][] readBobotOutput(int a, double b, String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/bobotoutput.txt");
+        File file = new File("d:/bobot/bobotoutput"+aktivasi+".txt");
         
         double arr[] = new double[10];
         double x[][] = new double[10][10];
@@ -222,9 +222,9 @@ public class Helper {
         return x;
     }
     
-    public void writeBiasOutput(double a[], int n){
+    public void writeBiasOutput(double a[], int n, String aktivasi){
         String teks = "";
-        String path = "d:/bobot/biasoutput.txt";
+        String path = "d:/bobot/biasoutput"+aktivasi+".txt";
         
         for (int i = 0; i < n; i++) {
             teks = (teks+" ") + Double.toString(a[i]);
@@ -239,9 +239,9 @@ public class Helper {
         }
     }
     
-    public double[] readBiasOutput(){
+    public double[] readBiasOutput(String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/biasoutput.txt");
+        File file = new File("d:/bobot/biasoutput"+aktivasi+".txt");
         
         double arr[] = new double[50];
         int i = 0;
@@ -261,9 +261,9 @@ public class Helper {
         return arr;
     }
     
-    public void writeSetting(double a[]){
+    public void writeSetting(double a[], String aktivasi){
         String teks = "";
-        String path = "d:/bobot/setting.txt";
+        String path = "d:/bobot/setting"+aktivasi+".txt";
         
         for (int i = 0; i < 3; i++) {
             teks = (teks+" ") + Double.toString(a[i]);
@@ -278,9 +278,9 @@ public class Helper {
         }
     }
     
-    public double[] readSetting(){
+    public double[] readSetting(String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/setting.txt");
+        File file = new File("d:/bobot/setting"+aktivasi+".txt");
         
         double arr[] = new double[3];
         int i = 0;

@@ -38,13 +38,22 @@ public class Testing extends javax.swing.JFrame {
     
     private void test() {
         String kategori = (String) comboKategori.getSelectedItem();
+        String aktivasi = (String) comboAktivasi.getSelectedItem();
         tbDataPrediksi.getDataVector().removeAllElements();
         tbDataPrediksi.fireTableDataChanged();
         DecimalFormat df = new DecimalFormat("#.##");
         
+        String pilihAktivasi = "";
+        
+        if ("Sigmoid Biner".equals(aktivasi)) {
+            pilihAktivasi = "Biner";
+        } else {
+            pilihAktivasi = "Bipolar";
+        }
+        
         Helper helper = new Helper();
         int countRecords = helper.countRecords();
-        double setting[] = helper.readSetting();
+        double setting[] = helper.readSetting(pilihAktivasi);
         
         double nilai_max = setting[2];
         double nilai_min = setting[1];
@@ -62,10 +71,10 @@ public class Testing extends javax.swing.JFrame {
         double t[] = new double[50];
         double prediksi[] = new double[50];
         
-        double v[][] = helper.readBobotHidden(neuron_hidden, neuron_input);
-        double vb[] = helper.readBiasHidden();
-        double w[][] = helper.readBobotOutput(neuron_output, neuron_hidden);
-        double wb[] = helper.readBiasOutput();
+        double v[][] = helper.readBobotHidden(neuron_hidden, neuron_input, pilihAktivasi);
+        double vb[] = helper.readBiasHidden(pilihAktivasi);
+        double w[][] = helper.readBobotOutput(neuron_output, neuron_hidden, pilihAktivasi);
+        double wb[] = helper.readBiasOutput(pilihAktivasi);
         
         if ("Semua Data".equals(kategori)) {
             countRecords = helper.countRecords();
@@ -76,12 +85,12 @@ public class Testing extends javax.swing.JFrame {
         int n = 0;
         try {
             Statement stm = Connect.getConn().createStatement();
-            // ResultSet rsl = stm.executeQuery("select * from tb_data");
+            // ResultSet rsl = stm.executeQuery("select * from datas");
             ResultSet rsl;
             if ("Semua Data".equals(kategori)) {
-                rsl = stm.executeQuery("select * from tb_data");
+                rsl = stm.executeQuery("select * from datas");
             } else {
-                rsl = stm.executeQuery("select * from tb_data where kategori_data = '"+kategori+"'");
+                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
             }
             
             while (rsl.next()) {
@@ -90,7 +99,7 @@ public class Testing extends javax.swing.JFrame {
                 xNorm[n][2] = rsl.getDouble("t3");
                 xNorm[n][3] = rsl.getDouble("t2");
                 xNorm[n][4] = rsl.getDouble("t1");
-                xNorm[n][5] = rsl.getDouble("target_data");
+                xNorm[n][5] = rsl.getDouble("target");
                 n++;
             }
         
@@ -137,25 +146,29 @@ public class Testing extends javax.swing.JFrame {
                 hasil = (((y[j])*(nilai_max-nilai_min)))+(0.8*nilai_min);
                 
             }
+            /*
             prediksi[i] = hasil;
             selisih[i] = Math.abs(hasil - t[i]);
             rataSelisih = rataSelisih + selisih[i];
+            */
             
-            akurasi[i] = (hasil/t[i] * 100);
+            // MAPE
+            prediksi[i] = hasil;
+            akurasi[i] = 100 - ((Math.abs(t[i]-hasil)/t[i]) * 100);
             rataAkurasi = rataAkurasi + akurasi[i];
             
-            System.out.println(hasil+" / "+t[i]+" = "+akurasi[i]);
+            // System.out.println(t[i]+" - "+hasil+" = "+akurasi[i]);
             // System.out.println(hasil+" - "+t[i]+" = "+selisih[i]);
         }
         
         try {
             Statement stm = Connect.getConn().createStatement();
-            // ResultSet rsl = stm.executeQuery("select * from tb_data");
+            // ResultSet rsl = stm.executeQuery("select * from datas");
             ResultSet rsl;
             if ("Semua Data".equals(kategori)) {
-                rsl = stm.executeQuery("select * from tb_data");
+                rsl = stm.executeQuery("select * from datas");
             } else {
-                rsl = stm.executeQuery("select * from tb_data where kategori_data = '"+kategori+"'");
+                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
             }
             
             int count = 0;
@@ -163,8 +176,8 @@ public class Testing extends javax.swing.JFrame {
             while (rsl.next()) {
                 Object[] obj = new Object[4];
                 
-                obj[0] = rsl.getString("tahun_data");
-                obj[1] = rsl.getString("target_data");
+                obj[0] = rsl.getString("tahun");
+                obj[1] = rsl.getString("target");
                 obj[2] = df.format(prediksi[count]);
                 obj[3] = df.format(akurasi[count])+"%";
                 
@@ -187,6 +200,7 @@ public class Testing extends javax.swing.JFrame {
     }
     
     private void predict() {
+        String aktivasi = (String) comboAktivasiPrediksi.getSelectedItem();
         double xNorm[][] = new double[10][10];
         xNorm[0][0] = Double.parseDouble(textT5.getText());
         xNorm[0][1] = Double.parseDouble(textT4.getText());
@@ -194,9 +208,16 @@ public class Testing extends javax.swing.JFrame {
         xNorm[0][3] = Double.parseDouble(textT2.getText());
         xNorm[0][4] = Double.parseDouble(textT1.getText());
         
+        String pilihAktivasi = "";
+        
+        if ("Sigmoid Biner".equals(aktivasi)) {
+            pilihAktivasi = "Biner";
+        } else {
+            pilihAktivasi = "Bipolar";
+        }
+        
         Helper helper = new Helper();
-
-        double setting[] = helper.readSetting();
+        double setting[] = helper.readSetting(pilihAktivasi);
         
         double nilai_max = setting[2];
         double nilai_min = setting[1];
@@ -213,10 +234,10 @@ public class Testing extends javax.swing.JFrame {
             }
         }
         
-        double v[][] = helper.readBobotHidden(neuron_hidden, neuron_input);
-        double vb[] = helper.readBiasHidden();
-        double w[][] = helper.readBobotOutput(neuron_output, neuron_hidden);
-        double wb[] = helper.readBiasOutput();
+        double v[][] = helper.readBobotHidden(neuron_hidden, neuron_input, pilihAktivasi);
+        double vb[] = helper.readBiasHidden(pilihAktivasi);
+        double w[][] = helper.readBobotOutput(neuron_output, neuron_hidden, pilihAktivasi);
+        double wb[] = helper.readBiasOutput(pilihAktivasi);
         
         DecimalFormat df = new DecimalFormat("#.##");
         
@@ -275,7 +296,8 @@ public class Testing extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         comboKategori = new javax.swing.JComboBox<>();
         buttonUji = new javax.swing.JButton();
-        buttonReset = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        comboAktivasi = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableUji = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -292,6 +314,11 @@ public class Testing extends javax.swing.JFrame {
         textT2 = new javax.swing.JTextField();
         textT1 = new javax.swing.JTextField();
         buttonPrediksi = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
+        comboAktivasiPrediksi = new javax.swing.JComboBox<>();
+        buttonReset = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         labelSelisih = new javax.swing.JLabel();
@@ -344,32 +371,39 @@ public class Testing extends javax.swing.JFrame {
             }
         });
 
-        buttonReset.setText("Reset");
+        jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Aktivasi");
+
+        comboAktivasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sigmoid Biner", "Sigmoid Bipolar" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(99, 99, 99)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(buttonUji, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonReset, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(comboKategori, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonUji, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(99, 99, 99)
+                            .addComponent(jLabel2))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(43, 43, 43)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(28, 28, 28)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(53, 53, 53))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel11)
+                                    .addGap(58, 58, 58)))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(comboKategori, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,10 +417,12 @@ public class Testing extends javax.swing.JFrame {
                     .addComponent(comboKategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonReset)
-                    .addComponent(buttonUji))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(buttonUji)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         tableUji.setModel(new javax.swing.table.DefaultTableModel(
@@ -413,23 +449,23 @@ public class Testing extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("T5");
+        jLabel5.setText("T-5");
 
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("T4");
+        jLabel6.setText("T-4");
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("T3");
+        jLabel7.setText("T-3");
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("T2");
+        jLabel8.setText("T-2");
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("T1");
+        jLabel9.setText("T-1");
 
         buttonPrediksi.setText("Prediksi");
         buttonPrediksi.addActionListener(new java.awt.event.ActionListener() {
@@ -438,36 +474,58 @@ public class Testing extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("Tahun");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2017", "2018" }));
+
+        jLabel14.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setText("Aktivasi");
+
+        comboAktivasiPrediksi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sigmoid Biner", "Sigmoid Bipolar" }));
+
+        buttonReset.setText("Reset");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(97, 97, 97)
+                            .addComponent(jLabel4))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(42, 42, 42)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(buttonPrediksi, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jLabel7)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jLabel9))
-                                    .addGap(54, 54, 54)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(textT5, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(textT4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(textT3, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(textT2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(textT1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                        .addGap(13, 13, 13)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel14))
+                                .addGap(54, 54, 54)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(textT5, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                                    .addComponent(textT4, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                                    .addComponent(textT3, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                                    .addComponent(textT2, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                                    .addComponent(textT1, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboAktivasiPrediksi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(buttonPrediksi, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(buttonReset, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -477,6 +535,14 @@ public class Testing extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboAktivasiPrediksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -498,8 +564,10 @@ public class Testing extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(textT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(buttonPrediksi)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonPrediksi)
+                    .addComponent(buttonReset))
+                .addGap(16, 16, 16))
         );
 
         jPanel4.setBackground(new java.awt.Color(0, 171, 169));
@@ -576,7 +644,7 @@ public class Testing extends javax.swing.JFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -586,13 +654,14 @@ public class Testing extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -650,10 +719,16 @@ public class Testing extends javax.swing.JFrame {
     private javax.swing.JButton buttonPrediksi;
     private javax.swing.JButton buttonReset;
     private javax.swing.JButton buttonUji;
+    private javax.swing.JComboBox<String> comboAktivasi;
+    private javax.swing.JComboBox<String> comboAktivasiPrediksi;
     private javax.swing.JComboBox<String> comboKategori;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

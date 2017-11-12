@@ -700,7 +700,7 @@ public class Learning extends javax.swing.JFrame {
                         if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
                             textAreaHidden.append("Bobot output["+j+"]["+k+"] = "+df.format(w[j][k])+"\n");
                         }
-                        help.writeBobotOutput(w, neuron_output, neuron_hidden);
+                        help.writeBobotOutput(w, neuron_output, neuron_hidden, "Biner");
                     }
                     // update bias
                     wb[j] = wb[j] + Awb[j];
@@ -708,7 +708,7 @@ public class Learning extends javax.swing.JFrame {
                     if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
                         textAreaHidden.append("Bias Output["+j+"] = "+df.format(wb[j])+"\n---------------------------------------\n");
                     }
-                    help.writeBiasOutput(wb, neuron_output);
+                    help.writeBiasOutput(wb, neuron_output, "Biner");
                 }
                 
                 // update bobot hidden
@@ -720,7 +720,7 @@ public class Learning extends javax.swing.JFrame {
                         if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
                             textAreaInput.append("Bobot Hidden["+k+"]["+j+"] = "+df.format(v[k][j])+"\n");
                         }
-                        help.writeBobotHidden(v, neuron_hidden, neuron_input);
+                        help.writeBobotHidden(v, neuron_hidden, neuron_input, "Biner");
                     }
                     // update bias
                     vb[j] = vb[j] + Avb[j];
@@ -728,7 +728,7 @@ public class Learning extends javax.swing.JFrame {
                     if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
                         textAreaInput.append("Bias Hidden["+j+"] = "+df.format(vb[j])+"\n----------------------------------------\n");
                     }
-                    help.writeBiasHidden(vb, neuron_hidden);
+                    help.writeBiasHidden(vb, neuron_hidden, "Biner");
                 }
             // Akhir for i
             }
@@ -775,7 +775,7 @@ public class Learning extends javax.swing.JFrame {
         data[1] = nilai_min;
         data[2] = nilai_max;
         
-        help.writeSetting(data);
+        help.writeSetting(data, "Biner");
     }
     
     private void resetData() {
@@ -1012,7 +1012,7 @@ public class Learning extends javax.swing.JFrame {
                         if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
                             textAreaHidden.append("Bobot output["+j+"]["+k+"] = "+df.format(w[j][k])+"\n");
                         }
-                        help.writeBobotOutput(w, neuron_output, neuron_hidden);
+                        help.writeBobotOutput(w, neuron_output, neuron_hidden, "Bipolar");
                     }
                     // update bias
                     wb[j] = wb[j] + Awb[j];
@@ -1020,7 +1020,7 @@ public class Learning extends javax.swing.JFrame {
                     if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
                         textAreaHidden.append("Bias Output["+j+"] = "+df.format(wb[j])+"\n---------------------------------------\n");
                     }
-                    help.writeBiasOutput(wb, neuron_output);
+                    help.writeBiasOutput(wb, neuron_output, "Bipolar");
                 }
                 
                 // update bobot hidden
@@ -1032,7 +1032,7 @@ public class Learning extends javax.swing.JFrame {
                         if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
                             textAreaInput.append("Bobot Hidden["+k+"]["+j+"] = "+df.format(v[k][j])+"\n");
                         }
-                        help.writeBobotHidden(v, neuron_hidden, neuron_input);
+                        help.writeBobotHidden(v, neuron_hidden, neuron_input, "Bipolar");
                     }
                     // update bias
                     vb[j] = vb[j] + Avb[j];
@@ -1040,7 +1040,7 @@ public class Learning extends javax.swing.JFrame {
                     if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
                         textAreaInput.append("Bias Hidden["+j+"] = "+df.format(vb[j])+"\n----------------------------------------\n");
                     }
-                    help.writeBiasHidden(vb, neuron_hidden);
+                    help.writeBiasHidden(vb, neuron_hidden, "Bipolar");
                 }
             // Akhir for i
             }
@@ -1087,7 +1087,7 @@ public class Learning extends javax.swing.JFrame {
         data[1] = nilai_min;
         data[2] = nilai_max;
         
-        help.writeSetting(data);
+        help.writeSetting(data, "Bipolar");
     }
     
     /**
