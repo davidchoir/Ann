@@ -64,7 +64,7 @@ public class Helper {
         int count = 0;
         try {
             Statement stm = Connect.getConn().createStatement();
-            ResultSet rsl = stm.executeQuery("select count(*) from tb_data where kategori_data = '"+kategori+"'");
+            ResultSet rsl = stm.executeQuery("select count(*) from datas where kategori = '"+kategori+"'");
             
             while (rsl.next()) {
                 count = rsl.getInt(1);

@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -24,8 +26,25 @@ public class Learning extends javax.swing.JFrame {
     /**
      * Creates new form Learning
      */
+    
+    private DefaultTableModel tbData;
+    
     public Learning() {
         initComponents();
+        
+        // Table Data
+        tbData = new DefaultTableModel();
+        
+        tableData.setModel(tbData);
+        tbData.addColumn("Tahun");
+        tbData.addColumn("T-5");
+        tbData.addColumn("T-4");
+        tbData.addColumn("T-3");
+        tbData.addColumn("T-2");
+        tbData.addColumn("T-1");
+        tbData.addColumn("Target");
+        
+        getLearningData();
     }
 
     /**
@@ -41,8 +60,6 @@ public class Learning extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel3 = new javax.swing.JLabel();
-        comboKategori = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         textHiddenLayer = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -52,7 +69,6 @@ public class Learning extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         textTampilIterasi = new javax.swing.JTextField();
         buttonLatih = new javax.swing.JButton();
-        progressBarLearning = new javax.swing.JProgressBar();
         jLabel8 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -78,9 +94,9 @@ public class Learning extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         textAreaMse = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
-        textAreaZ = new javax.swing.JTextArea();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        textAreaY = new javax.swing.JTextArea();
+        tableData = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(0, 171, 169));
 
@@ -110,12 +126,6 @@ public class Learning extends javax.swing.JFrame {
         jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Kategori Data");
-
-        comboKategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semua Data", "Data Latih", "Data Uji" }));
-
         jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Neuron Hidden");
@@ -126,7 +136,7 @@ public class Learning extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Target Eror");
+        jLabel6.setText("Target Galat");
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -141,15 +151,13 @@ public class Learning extends javax.swing.JFrame {
             }
         });
 
-        progressBarLearning.setStringPainted(true);
-
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Pengaturan");
 
         jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Informasi saat ini");
+        jLabel11.setText("Informasi akhir");
 
         jSeparator2.setBackground(new java.awt.Color(255, 255, 255));
         jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
@@ -201,59 +209,54 @@ public class Learning extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addGap(60, 60, 60)
-                                .addComponent(comboAktivasi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(textTampilIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addGap(11, 11, 11)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textHiddenLayer)
-                                    .addComponent(comboKategori, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12)
-                                    .addComponent(jLabel13))
-                                .addGap(80, 80, 80)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelMse)
-                                    .addComponent(labelIterasi)))
-                            .addComponent(progressBarLearning, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(58, 58, 58)
-                                        .addComponent(jLabel11))
-                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(buttonLatih, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(textTampilIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGap(58, 58, 58)
+                                    .addComponent(jLabel11))
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel12)
+                                            .addComponent(jLabel13))
+                                        .addGap(80, 80, 80)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelMse)
+                                            .addComponent(labelIterasi)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                        .addGap(3, 3, 3)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel15)
+                                            .addComponent(jLabel7)))
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel5)
-                                    .addComponent(jLabel14)
-                                    .addComponent(jLabel6))
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel14)))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textHiddenLayer, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(textTargetError)
                                     .addComponent(textLearningRate)
-                                    .addComponent(textEpoch))))
+                                    .addComponent(textEpoch, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addGap(19, 19, 19))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -265,39 +268,33 @@ public class Learning extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(comboKategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textHiddenLayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(textHiddenLayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textEpoch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(textEpoch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textLearningRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(textLearningRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(textTargetError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textTargetError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(textTampilIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
+                    .addComponent(textTampilIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonLatih)
                     .addComponent(buttonReset))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(progressBarLearning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -323,9 +320,9 @@ public class Learning extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,7 +343,7 @@ public class Learning extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(25, 25, 25))
         );
@@ -355,7 +352,7 @@ public class Learning extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         textAreaInput.setColumns(20);
@@ -377,7 +374,7 @@ public class Learning extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addComponent(jLabel10)
                 .addGap(76, 76, 76))
         );
@@ -393,13 +390,41 @@ public class Learning extends javax.swing.JFrame {
         textAreaMse.setRows(5);
         jScrollPane3.setViewportView(textAreaMse);
 
-        textAreaZ.setColumns(20);
-        textAreaZ.setRows(5);
-        jScrollPane4.setViewportView(textAreaZ);
+        tableData.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tableData);
 
-        textAreaY.setColumns(20);
-        textAreaY.setRows(5);
-        jScrollPane5.setViewportView(textAreaY);
+        jPanel6.setBackground(new java.awt.Color(0, 171, 169));
+
+        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Data Latih");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(290, 290, 290)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -410,20 +435,22 @@ public class Learning extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,24 +458,25 @@ public class Learning extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane4)
-                                    .addComponent(jScrollPane5))))))
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -465,9 +493,6 @@ public class Learning extends javax.swing.JFrame {
             resetData();
             sigmoidBipolar();
         }
-        
-        // resetData();
-        // learningData();
     }//GEN-LAST:event_buttonLatihActionPerformed
 
     private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
@@ -502,27 +527,14 @@ public class Learning extends javax.swing.JFrame {
         double target_error = Double.parseDouble(textTargetError.getText());
         double last_mse;
         
-        String kategori = (String) comboKategori.getSelectedItem();
         DecimalFormat df = new DecimalFormat("#.####");
         int iterasi = Integer.parseInt(textTampilIterasi.getText());
         Helper help = new Helper();
-        countRecords = 0;
-        
-        if ("Semua Data".equals(kategori)) {
-            countRecords = help.countRecords();
-        } else {
-            countRecords = help.countRecords(kategori);
-        }
+        countRecords = help.countRecords("Data Latih");
         
         try {
             Statement stm = Connect.getConn().createStatement();
-            // ResultSet rsl = stm.executeQuery("select * from tb_data");
-            ResultSet rsl;
-            if ("Semua Data".equals(kategori)) {
-                rsl = stm.executeQuery("select * from datas");
-            } else {
-                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
-            }
+            ResultSet rsl = stm.executeQuery("select * from datas where kategori = 'Data Latih'");
             
             while (rsl.next()) {
                 xNorm[n][0] = rsl.getDouble("t5");
@@ -566,27 +578,6 @@ public class Learning extends javax.swing.JFrame {
             // System.out.println("Bias = "+wb[j]);
         }
         
-        /*
-        // Random bobot
-        for (int j = 0; j < neuron_hidden; j++) {
-            for (int k = 0; k < neuron_input; k++) {
-                v[j][k] = Math.random();
-                System.out.println("Bobot = "+v[j][k]);
-            }
-            vb[j] = Math.random();
-            System.out.println("Bias = "+vb[j]);
-        }
-        
-        for (int j = 0; j < neuron_output; j++) {
-            for (int k = 0; k < neuron_hidden; k++) {
-                w[j][k] = Math.random();
-                System.out.println("Bobot = "+w[j][k]);
-            }
-            wb[j] = Math.random();
-            System.out.println("Bias = "+wb[j]);
-        }
-        */
-        
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         
         do {
@@ -597,8 +588,6 @@ public class Learning extends javax.swing.JFrame {
             textAreaMse.update(textAreaMse.getGraphics());
             textAreaInput.update(textAreaInput.getGraphics());
             textAreaHidden.update(textAreaHidden.getGraphics());
-            textAreaZ.update(textAreaZ.getGraphics());
-            textAreaY.update(textAreaY.getGraphics());
             
             for (int i = 0; i < countRecords; i++) {
                 
@@ -618,12 +607,12 @@ public class Learning extends javax.swing.JFrame {
                     // Hasil z dengan aktivasi sigmoid biner
                     z[j] = 1/(1+(Math.exp(-z_net[j])));
                     if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-                        textAreaZ.append("Nilai z["+j+"] = "+df.format(z[j])+"\n");
+                        // textAreaZ.append("Nilai z["+j+"] = "+df.format(z[j])+"\n");
                     }
                     // System.out.println("z["+j+"] = "+z[j]);
                 }
                 if ((loop % iterasi) == 0) {
-                    textAreaZ.append("---------------------------------------\n");
+                    // textAreaZ.append("---------------------------------------\n");
                 }
 
                 // Output layer
@@ -639,7 +628,7 @@ public class Learning extends javax.swing.JFrame {
                     y[j] = 1/(1+(Math.exp(-y_net[j])));
                     
                     if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-                        textAreaY.append("Nilai y = "+df.format(y[j])+"\n");
+                        // textAreaY.append("Nilai y = "+df.format(y[j])+"\n");
                     }
                     temp_mse[i] = Math.pow((y[j]-t[i]), 2)/countRecords;
                 }
@@ -735,12 +724,10 @@ public class Learning extends javax.swing.JFrame {
         
         // System.out.println("MSE "+loop+" = "+mse);
         
+        // Tampil perubahan bobot
+        
         if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
             textAreaMse.append("MSE ["+loop+"] = "+df.format(mse)+"\n");
-            textAreaInput.append("Epoch ["+loop+"]\n======================\n");
-            textAreaHidden.append("Epoch ["+loop+"]\n======================\n");
-            textAreaZ.append("Epoch ["+loop+"]\n======================\n");
-            textAreaY.append("-----------------------\nEpoch ["+loop+"]\n======================\n");
         }
         
         last_mse = mse;
@@ -748,10 +735,6 @@ public class Learning extends javax.swing.JFrame {
         
         // for graph
         dataset.setValue(new Double(mse), "Values", new Integer(loop));
-        
-        // progress bar
-        int learningProgress = (loop/epoch) * 100;
-        progressBarLearning.setValue(learningProgress);
         
         } while (loop < epoch && target_error < last_mse);
         System.out.println();
@@ -781,13 +764,69 @@ public class Learning extends javax.swing.JFrame {
     private void resetData() {
         textAreaInput.setText("");
         textAreaHidden.setText("");
-        textAreaZ.setText("");
-        textAreaY.setText("");
         textAreaMse.setText("");
 //        textHiddenLayer.setText("");
 //        textEpoch.setText("");
 //        textLearningRate.setText("");
 //        textTargetError.setText("");
+    }
+    
+    private void getLearningData() {
+        tbData.getDataVector().removeAllElements();
+        tbData.fireTableDataChanged();
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl = stm.executeQuery("select * from datas where kategori = 'Data Latih'");
+            
+            while (rsl.next()) {
+                Object[] obj = new Object[8];
+                
+                obj[0] = rsl.getString("tahun");
+                obj[1] = rsl.getString("t5");
+                obj[2] = rsl.getString("t4");
+                obj[3] = rsl.getString("t3");
+                obj[4] = rsl.getString("t2");
+                obj[5] = rsl.getString("t1");
+                obj[6] = rsl.getString("target");
+                
+                tbData.addRow(obj);
+            }
+            
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
+        }
+    }
+    
+    private void getTransformationData() {
+        tbData.getDataVector().removeAllElements();
+        tbData.fireTableDataChanged();
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl = stm.executeQuery("select * from datas where kategori = 'Data Latih'");
+            
+            while (rsl.next()) {
+                Object[] obj = new Object[8];
+                
+                obj[0] = rsl.getString("tahun");
+                obj[1] = rsl.getString("t5");
+                obj[2] = rsl.getString("t4");
+                obj[3] = rsl.getString("t3");
+                obj[4] = rsl.getString("t2");
+                obj[5] = rsl.getString("t1");
+                obj[6] = rsl.getString("target");
+                
+                tbData.addRow(obj);
+            }
+            
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
+        }
     }
     
     private void sigmoidBipolar(){
@@ -813,28 +852,15 @@ public class Learning extends javax.swing.JFrame {
         int epoch = Integer.parseInt(textEpoch.getText());
         double target_error = Double.parseDouble(textTargetError.getText());
         double last_mse;
-        
-        String kategori = (String) comboKategori.getSelectedItem();
+      
         DecimalFormat df = new DecimalFormat("#.####");
         int iterasi = Integer.parseInt(textTampilIterasi.getText());
         Helper help = new Helper();
-        countRecords = 0;
-        
-        if ("Semua Data".equals(kategori)) {
-            countRecords = help.countRecords();
-        } else {
-            countRecords = help.countRecords(kategori);
-        }
+        countRecords = help.countRecords("Data Latih");
         
         try {
             Statement stm = Connect.getConn().createStatement();
-            // ResultSet rsl = stm.executeQuery("select * from tb_data");
-            ResultSet rsl;
-            if ("Semua Data".equals(kategori)) {
-                rsl = stm.executeQuery("select * from datas");
-            } else {
-                rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
-            }
+            ResultSet rsl = stm.executeQuery("select * from datas where kategori = 'Data Latih'");
             
             while (rsl.next()) {
                 xNorm[n][0] = rsl.getDouble("t5");
@@ -909,8 +935,6 @@ public class Learning extends javax.swing.JFrame {
             textAreaMse.update(textAreaMse.getGraphics());
             textAreaInput.update(textAreaInput.getGraphics());
             textAreaHidden.update(textAreaHidden.getGraphics());
-            textAreaZ.update(textAreaZ.getGraphics());
-            textAreaY.update(textAreaY.getGraphics());
             
             for (int i = 0; i < countRecords; i++) {
                 
@@ -929,13 +953,7 @@ public class Learning extends javax.swing.JFrame {
 
                     // Hasil z dengan aktivasi sigmoid bipolar
                     z[j] = (2/(1+(Math.exp(-z_net[j]))))-1;
-                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-                        textAreaZ.append("Nilai z["+j+"] = "+df.format(z[j])+"\n");
-                    }
                     // System.out.println("z["+j+"] = "+z[j]);
-                }
-                if ((loop % iterasi) == 0) {
-                    textAreaZ.append("---------------------------------------\n");
                 }
 
                 // Output layer
@@ -949,10 +967,7 @@ public class Learning extends javax.swing.JFrame {
                     }
                     y_net[j] = wb[j] + temp;
                     y[j] = (2/(1+(Math.exp(-y_net[j]))))-1;
-                    
-                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-                        textAreaY.append("Nilai y = "+df.format(y[j])+"\n");
-                    }
+
                     temp_mse[i] = Math.pow((y[j]-t[i]), 2)/countRecords;
                 }
                 
@@ -1051,8 +1066,6 @@ public class Learning extends javax.swing.JFrame {
             textAreaMse.append("MSE ["+loop+"] = "+df.format(mse)+"\n");
             textAreaInput.append("Epoch ["+loop+"]\n======================\n");
             textAreaHidden.append("Epoch ["+loop+"]\n======================\n");
-            textAreaZ.append("Epoch ["+loop+"]\n======================\n");
-            textAreaY.append("-----------------------\nEpoch ["+loop+"]\n======================\n");
         }
         
         last_mse = mse;
@@ -1060,10 +1073,6 @@ public class Learning extends javax.swing.JFrame {
         
         // for graph
         dataset.setValue(new Double(mse), "Values", new Integer(loop));
-        
-        // progress bar
-        int learningProgress = (loop/epoch) * 100;
-        progressBarLearning.setValue(learningProgress);
         
         } while (loop < epoch && target_error < last_mse);
         System.out.println();
@@ -1129,7 +1138,6 @@ public class Learning extends javax.swing.JFrame {
     private javax.swing.JButton buttonLatih;
     private javax.swing.JButton buttonReset;
     private javax.swing.JComboBox<String> comboAktivasi;
-    private javax.swing.JComboBox<String> comboKategori;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1150,21 +1158,19 @@ public class Learning extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel labelIterasi;
     private javax.swing.JLabel labelMse;
-    private javax.swing.JProgressBar progressBarLearning;
+    private javax.swing.JTable tableData;
     private javax.swing.JTextArea textAreaHidden;
     private javax.swing.JTextArea textAreaInput;
     private javax.swing.JTextArea textAreaMse;
-    private javax.swing.JTextArea textAreaY;
-    private javax.swing.JTextArea textAreaZ;
     private javax.swing.JTextField textEpoch;
     private javax.swing.JTextField textHiddenLayer;
     private javax.swing.JTextField textLearningRate;

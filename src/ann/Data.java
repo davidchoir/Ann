@@ -98,7 +98,7 @@ public class Data extends javax.swing.JFrame {
         comboSort = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        comboAktivasi = new javax.swing.JComboBox<>();
+        comboScalling = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablePreprocessing = new javax.swing.JTable();
 
@@ -365,12 +365,12 @@ public class Data extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Proses Preprocessing");
+        jLabel2.setText("Transformasi Data");
 
-        comboAktivasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sigmoid Biner", "Sigmoid Bipolar" }));
-        comboAktivasi.addActionListener(new java.awt.event.ActionListener() {
+        comboScalling.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Scalling[0.1]", "Scalling[-1.1]" }));
+        comboScalling.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboAktivasiActionPerformed(evt);
+                comboScallingActionPerformed(evt);
             }
         });
 
@@ -379,10 +379,10 @@ public class Data extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(164, 164, 164)
+                .addGap(181, 181, 181)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboScalling, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -391,7 +391,7 @@ public class Data extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboScalling, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -487,16 +487,16 @@ public class Data extends javax.swing.JFrame {
         tambahData();
     }//GEN-LAST:event_buttonTambahActionPerformed
 
-    private void comboAktivasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAktivasiActionPerformed
+    private void comboScallingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboScallingActionPerformed
         String kategori = (String) comboSort.getSelectedItem();
-        String aktivasi = (String) comboAktivasi.getSelectedItem();
+        String scalling = (String) comboScalling.getSelectedItem();
         
-        if ("Sigmoid Biner".equals(aktivasi)) {
+        if ("Scalling[0.1]".equals(scalling)) {
             getPreprocessingBiner(kategori);
-        } else if ("Sigmoid Bipolar".equals(aktivasi)) {
+        } else if ("Scalling[-1.1]".equals(scalling)) {
             getPreprocessingBipolar(kategori);
         }
-    }//GEN-LAST:event_comboAktivasiActionPerformed
+    }//GEN-LAST:event_comboScallingActionPerformed
 
     /**
      * @param args the command line arguments
@@ -615,12 +615,12 @@ public class Data extends javax.swing.JFrame {
             while (rsl.next()) {
                 Object[] obj = new Object[8];
 
-                t5[count] = ((0.8*(rsl.getDouble("t5")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
-                t4[count] = ((0.8*(rsl.getDouble("t4")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
-                t3[count] = ((0.8*(rsl.getDouble("t3")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
-                t2[count] = ((0.8*(rsl.getDouble("t2")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
-                t1[count] = ((0.8*(rsl.getDouble("t1")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
-                target[count] = ((0.8*(rsl.getDouble("target")-helper.nilaiMin(xNorm, countRecords)))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))+0.1;
+                t5[count] = ((rsl.getDouble("t5")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
+                t4[count] = ((rsl.getDouble("t4")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
+                t3[count] = ((rsl.getDouble("t3")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
+                t2[count] = ((rsl.getDouble("t2")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
+                t1[count] = ((rsl.getDouble("t1")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
+                target[count] = ((rsl.getDouble("target")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
                 
                 obj[0] = rsl.getString("tahun");
                 obj[1] = df.format(t5[count]);
@@ -820,10 +820,10 @@ public class Data extends javax.swing.JFrame {
             
             while (rsl.next()) {
                 textT1.setText(rsl.getString("target"));
-                textT2.setText(rsl.getString("t-1"));
-                textT3.setText(rsl.getString("t-2"));
-                textT4.setText(rsl.getString("t-3"));
-                textT5.setText(rsl.getString("t-4"));
+                textT2.setText(rsl.getString("t1"));
+                textT3.setText(rsl.getString("t2"));
+                textT4.setText(rsl.getString("t3"));
+                textT5.setText(rsl.getString("t4"));
                 
                 int tahun_data = 1 + rsl.getInt("tahun");
                 textTahun.setText(""+tahun_data);
@@ -873,8 +873,8 @@ public class Data extends javax.swing.JFrame {
     private javax.swing.JButton buttonSimpan;
     private javax.swing.JButton buttonTambah;
     private javax.swing.JButton buttonUbah;
-    private javax.swing.JComboBox<String> comboAktivasi;
     private javax.swing.JComboBox<String> comboKategori;
+    private javax.swing.JComboBox<String> comboScalling;
     private javax.swing.JComboBox<String> comboSort;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
