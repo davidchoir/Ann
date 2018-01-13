@@ -79,7 +79,7 @@ public class Helper {
     
     public void writeBobotHidden(double a[][], int x, int y, String aktivasi){
         String teks = "";
-        String path = "d:/bobot/bobothidden"+aktivasi+".txt";
+        String path = "d:/bobot/"+aktivasi+"/bobothidden.txt";
         
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -98,7 +98,7 @@ public class Helper {
     
     public double[][] readBobotHidden(double a, int b, String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/bobothidden"+aktivasi+".txt");
+        File file = new File("d:/bobot/"+aktivasi+"/bobothidden.txt");
         
         double arr[] = new double[100];
         double x[][] = new double[100][100];
@@ -131,7 +131,7 @@ public class Helper {
     
     public void writeBiasHidden(double a[], int n, String aktivasi){
         String teks = "";
-        String path = "d:/bobot/biashidden"+aktivasi+".txt";
+        String path = "d:/bobot/"+aktivasi+"/biashidden.txt";
         
         for (int i = 0; i < n; i++) {
             teks = (teks+" ") + Double.toString(a[i]);
@@ -148,7 +148,7 @@ public class Helper {
     
     public double[] readBiasHidden(String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/biashidden"+aktivasi+".txt");
+        File file = new File("d:/bobot/"+aktivasi+"/biashidden.txt");
         
         double arr[] = new double[100];
         int i = 0;
@@ -172,7 +172,7 @@ public class Helper {
     
     public void writeBobotOutput(double a[][], int x, int y, String aktivasi){
         String teks = "";
-        String path = "d:/bobot/bobotoutput"+aktivasi+".txt";
+        String path = "d:/bobot/"+aktivasi+"/bobotoutput.txt";
         
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -191,7 +191,7 @@ public class Helper {
     
     public double[][] readBobotOutput(int a, double b, String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/bobotoutput"+aktivasi+".txt");
+        File file = new File("d:/bobot/"+aktivasi+"/bobotoutput.txt");
         
         double arr[] = new double[10];
         double x[][] = new double[10][10];
@@ -224,7 +224,7 @@ public class Helper {
     
     public void writeBiasOutput(double a[], int n, String aktivasi){
         String teks = "";
-        String path = "d:/bobot/biasoutput"+aktivasi+".txt";
+        String path = "d:/bobot/"+aktivasi+"/biasoutput.txt";
         
         for (int i = 0; i < n; i++) {
             teks = (teks+" ") + Double.toString(a[i]);
@@ -241,7 +241,7 @@ public class Helper {
     
     public double[] readBiasOutput(String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/biasoutput"+aktivasi+".txt");
+        File file = new File("d:/bobot/"+aktivasi+"/biasoutput.txt");
         
         double arr[] = new double[50];
         int i = 0;
@@ -263,7 +263,7 @@ public class Helper {
     
     public void writeSetting(double a[], String aktivasi){
         String teks = "";
-        String path = "d:/bobot/setting"+aktivasi+".txt";
+        String path = "d:/bobot/"+aktivasi+"/setting.txt";
         
         for (int i = 0; i < 3; i++) {
             teks = (teks+" ") + Double.toString(a[i]);
@@ -280,7 +280,7 @@ public class Helper {
     
     public double[] readSetting(String aktivasi){
         Scanner scan;
-        File file = new File("d:/bobot/setting"+aktivasi+".txt");
+        File file = new File("d:/bobot/"+aktivasi+"/setting.txt");
         
         double arr[] = new double[3];
         int i = 0;

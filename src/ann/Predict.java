@@ -49,15 +49,16 @@ public class Predict extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        comboTahun = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         comboAktivasi = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         buttonPrediksi = new javax.swing.JButton();
+        textTahun = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablePrediction = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Prediksi");
 
         jPanel1.setBackground(new java.awt.Color(0, 171, 169));
 
@@ -92,8 +93,6 @@ public class Predict extends javax.swing.JFrame {
         jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
 
-        comboTahun.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
-
         jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Tahun");
@@ -124,10 +123,10 @@ public class Predict extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4))
-                                .addGap(40, 40, 40)
+                                .addGap(30, 30, 30)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(comboTahun, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboAktivasi, 0, 120, Short.MAX_VALUE)))
+                                    .addComponent(textTahun)
+                                    .addComponent(comboAktivasi, 0, 130, Short.MAX_VALUE)))
                             .addComponent(jSeparator1)
                             .addComponent(buttonPrediksi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -144,8 +143,8 @@ public class Predict extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboTahun, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(textTahun, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,6 +203,7 @@ public class Predict extends javax.swing.JFrame {
     
     private void predict() {
         String aktivasi = (String) comboAktivasi.getSelectedItem();
+        int nTahun = Integer.parseInt(textTahun.getText());
         double xNorm[][] = new double[10][10];
         int tahun = 0;
         
@@ -249,9 +249,11 @@ public class Predict extends javax.swing.JFrame {
         
         for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 5; j++) {
-                // ((rsl.getDouble("t5")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
-                x[i][j] = ((xNorm[i][j]-nilai_min)*(1-0)/(nilai_max-nilai_min))-0;
-                // x[i][j] = ((0.8*(xNorm[i][j]-nilai_min))/(nilai_max-nilai_min))+0.1;
+                if ("Sigmoid Biner".equals(aktivasi)) {
+                    x[i][j] = ((xNorm[i][j]-nilai_min)*(1-0)/(nilai_max-nilai_min))-0;
+                } else {
+                    x[i][j] = ((xNorm[i][j]-nilai_min)*(1-(-1))/(nilai_max-nilai_min))-1;
+                }
             }
         }
         
@@ -262,7 +264,7 @@ public class Predict extends javax.swing.JFrame {
         
         DecimalFormat df = new DecimalFormat("#.##");
         
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < nTahun; i++) {
             
             double z[] = new double[10];
             for (int j = 0; j < neuron_hidden; j++) {
@@ -310,7 +312,7 @@ public class Predict extends javax.swing.JFrame {
 
         obj[0] = i+1;
         obj[1] = tahun;
-        obj[2] = hasil;
+        obj[2] = df.format(hasil);
 
         tbPrediction.addRow(obj);   
         }
@@ -397,7 +399,6 @@ public class Predict extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonPrediksi;
     private javax.swing.JComboBox<String> comboAktivasi;
-    private javax.swing.JComboBox<String> comboTahun;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -407,5 +408,6 @@ public class Predict extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tablePrediction;
+    private javax.swing.JTextField textTahun;
     // End of variables declaration//GEN-END:variables
 }

@@ -11,6 +11,10 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -39,6 +43,7 @@ public class Testing extends javax.swing.JFrame {
     private void test() {
         String kategori = (String) comboKategori.getSelectedItem();
         String aktivasi = (String) comboAktivasi.getSelectedItem();
+        
         tbDataPrediksi.getDataVector().removeAllElements();
         tbDataPrediksi.fireTableDataChanged();
         DecimalFormat df = new DecimalFormat("#.##");
@@ -51,6 +56,7 @@ public class Testing extends javax.swing.JFrame {
             pilihAktivasi = "Bipolar";
         }
         
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         Helper helper = new Helper();
         int countRecords = helper.countRecords();
         double setting[] = helper.readSetting(pilihAktivasi);
@@ -180,6 +186,10 @@ public class Testing extends javax.swing.JFrame {
                 obj[3] = df.format(akurasi[count])+"%";
                 
                 tbDataPrediksi.addRow(obj);
+                
+                // for graph
+                dataset.setValue(new Double(rsl.getString("target")), "Values", new Integer(count));
+                
                 count++;
             }
             
@@ -189,6 +199,12 @@ public class Testing extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
         }
         
+        JFreeChart chart = ChartFactory.createLineChart("Grafik MSE", "Epoch", "Nilai MSE", dataset);
+        
+        ChartFrame frame = new ChartFrame("Bar Chart", chart);
+        frame.setVisible(true);
+        frame.setSize(700,550);
+        
         // MAPE Akurasi
         rataAkurasi = rataAkurasi/countRecords;
         labelSelisih.setText(String.valueOf(df.format(rataAkurasi))+"%");
@@ -196,89 +212,6 @@ public class Testing extends javax.swing.JFrame {
         // rataSelisih = rataSelisih/countRecords;
         // labelSelisih.setText(String.valueOf(df.format(rataSelisih)));
     }
-    
-    // Predict IPM
-    /*
-    private void predict() {
-        String aktivasi = (String) comboAktivasiPrediksi.getSelectedItem();
-        double xNorm[][] = new double[10][10];
-        xNorm[0][0] = Double.parseDouble(textT5.getText());
-        xNorm[0][1] = Double.parseDouble(textT4.getText());
-        xNorm[0][2] = Double.parseDouble(textT3.getText());
-        xNorm[0][3] = Double.parseDouble(textT2.getText());
-        xNorm[0][4] = Double.parseDouble(textT1.getText());
-        
-        String pilihAktivasi = "";
-        
-        if ("Sigmoid Biner".equals(aktivasi)) {
-            pilihAktivasi = "Biner";
-        } else {
-            pilihAktivasi = "Bipolar";
-        }
-        
-        Helper helper = new Helper();
-        double setting[] = helper.readSetting(pilihAktivasi);
-        
-        double nilai_max = setting[2];
-        double nilai_min = setting[1];
-        double neuron_hidden = setting[0];
-        int neuron_output = 1;
-        int neuron_input = 5;
-        double hasil;
-        
-        double x[][] = new double[10][10];
-        
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 5; j++) {
-                x[i][j] = ((0.8*(xNorm[i][j]-nilai_min))/(nilai_max-nilai_min))+0.1;
-            }
-        }
-        
-        double v[][] = helper.readBobotHidden(neuron_hidden, neuron_input, pilihAktivasi);
-        double vb[] = helper.readBiasHidden(pilihAktivasi);
-        double w[][] = helper.readBobotOutput(neuron_output, neuron_hidden, pilihAktivasi);
-        double wb[] = helper.readBiasOutput(pilihAktivasi);
-        
-        DecimalFormat df = new DecimalFormat("#.##");
-        
-        for (int i = 0; i < 1; i++) {
-            
-            double z[] = new double[10];
-            for (int j = 0; j < neuron_hidden; j++) {
-                double z_net[] = new double[10];
-                double temp = 0;
-                for (int k = 0; k < neuron_input; k++) {
-                    // System.out.println(v[i][j]);
-                    temp = temp + (x[i][k] * v[k][j]);
-                    // System.out.println(x[i][k]+" "+v[k][j]);
-                }
-                z_net[j] = vb[j] + temp;
-                z[j] = 1/(1+(Math.exp(-z_net[j])));
-            }
-            
-            double y[] = new double[10];
-            for (int j = 0; j < neuron_output; j++) {
-                double y_net[] = new double[10];
-                double temp = 0;
-
-                for (int k = 0; k < neuron_hidden; k++) {
-                    temp = temp + (z[k] * w[j][k]);
-                }
-                y_net[j] = wb[j] + temp;
-                y[j] = 1/(1+(Math.exp(-y_net[j])));
-                
-                // double hasil = (((y[j])*(str.nilai_max-str.nilai_min)))+(0.8*str.nilai_min);
-                // hasil = (((y[j])*(77-69)))+(0.8*69);
-                // hasil = (((y[j])*(nilai_max-nilai_min)))+(0.8*nilai_min);
-                
-                // Denormalisasi bipolar
-                hasil = ((nilai_min*(1-(-1)))+((y[j]-(-1))*(nilai_max-nilai_min)))/(1-(-1));
-                
-                labelPrediksi.setText(String.valueOf(df.format(hasil)));
-            }
-        }
-    }
-    */
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -304,6 +237,9 @@ public class Testing extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         labelSelisih = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Vlidasi dan Pengujian");
 
         jPanel1.setBackground(new java.awt.Color(0, 171, 169));
 

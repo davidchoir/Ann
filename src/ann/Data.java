@@ -91,6 +91,7 @@ public class Data extends javax.swing.JFrame {
         buttonSimpan = new javax.swing.JButton();
         buttonUbah = new javax.swing.JButton();
         buttonTambah = new javax.swing.JButton();
+        buttonReset = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableData = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -102,7 +103,8 @@ public class Data extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablePreprocessing = new javax.swing.JTable();
 
-        setTitle("Data Latih dan Data Uji");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Data IPM");
         setBackground(new java.awt.Color(44, 62, 80));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -110,7 +112,7 @@ public class Data extends javax.swing.JFrame {
 
         labelHeader.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         labelHeader.setForeground(new java.awt.Color(255, 255, 255));
-        labelHeader.setText("DATA LATIH DAN DATA UJI");
+        labelHeader.setText("DATA IPM D.I. YOGYAKARTA");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -220,6 +222,13 @@ public class Data extends javax.swing.JFrame {
             }
         });
 
+        buttonReset.setText("Reset");
+        buttonReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonResetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -227,39 +236,45 @@ public class Data extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10))
-                                .addGap(37, 37, 37)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(comboKategori, 0, 137, Short.MAX_VALUE)
-                                    .addComponent(textTahun)
-                                    .addComponent(textT5)
-                                    .addComponent(textT4)
-                                    .addComponent(textT3)
-                                    .addComponent(textT2)
-                                    .addComponent(textT1)
-                                    .addComponent(textTarget)))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(buttonUbah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(buttonTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(buttonSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
-                        .addComponent(labelTitle)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addComponent(labelTitle))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 3, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel10))
+                                        .addGap(37, 37, 37)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(comboKategori, 0, 137, Short.MAX_VALUE)
+                                            .addComponent(textTahun)
+                                            .addComponent(textT5)
+                                            .addComponent(textT4)
+                                            .addComponent(textT3)
+                                            .addComponent(textT2)
+                                            .addComponent(textT1)
+                                            .addComponent(textTarget)))
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buttonSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonHapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(buttonReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonUbah, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))))))
+                .addGap(27, 27, 27))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,11 +318,13 @@ public class Data extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(textTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(buttonSimpan)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonSimpan)
+                    .addComponent(buttonUbah))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonHapus)
-                    .addComponent(buttonUbah))
+                    .addComponent(buttonReset))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -498,6 +515,10 @@ public class Data extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboScallingActionPerformed
 
+    private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
+        resetField();
+    }//GEN-LAST:event_buttonResetActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -569,7 +590,9 @@ public class Data extends javax.swing.JFrame {
         DecimalFormat df = new DecimalFormat("#.##");
         Helper helper = new Helper();
         int countRecords = helper.countRecords();
+        
         double xNorm[][] = new double[50][50];
+        double xTemp[][] = new double[50][50];
         double t5[] = new double[50];
         double t4[] = new double[50];
         double t3[] = new double[50];
@@ -578,6 +601,31 @@ public class Data extends javax.swing.JFrame {
         double target[] = new double[50];
         int count = 0;
         
+        // for minmax
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl = stm.executeQuery("select * from datas");;
+            
+            while (rsl.next()) {
+                xTemp[count][0] = rsl.getDouble("t5");
+                xTemp[count][1] = rsl.getDouble("t4");
+                xTemp[count][2] = rsl.getDouble("t3");
+                xTemp[count][3] = rsl.getDouble("t2");
+                xTemp[count][4] = rsl.getDouble("t1");
+                xTemp[count][5] = rsl.getDouble("target");
+                count++;
+            }
+        
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil data\n"+e);
+        }
+        
+        double nilaiMin = helper.nilaiMin(xTemp, countRecords);
+        double nilaiMax = helper.nilaiMax(xTemp, countRecords);
+        
+        // load data from database
         try {
             Statement stm = Connect.getConn().createStatement();
             ResultSet rsl;
@@ -603,6 +651,8 @@ public class Data extends javax.swing.JFrame {
             System.out.println("Gagal mengambil data\n"+e);
         }
         
+        // scalling data
+        
         try {
             Statement stm = Connect.getConn().createStatement();
             ResultSet rsl;
@@ -615,12 +665,12 @@ public class Data extends javax.swing.JFrame {
             while (rsl.next()) {
                 Object[] obj = new Object[8];
 
-                t5[count] = ((rsl.getDouble("t5")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
-                t4[count] = ((rsl.getDouble("t4")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
-                t3[count] = ((rsl.getDouble("t3")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
-                t2[count] = ((rsl.getDouble("t2")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
-                t1[count] = ((rsl.getDouble("t1")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
-                target[count] = ((rsl.getDouble("target")-helper.nilaiMin(xNorm, countRecords))*(1-0)/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-0;
+                t5[count] = ((rsl.getDouble("t5")-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
+                t4[count] = ((rsl.getDouble("t4")-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
+                t3[count] = ((rsl.getDouble("t3")-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
+                t2[count] = ((rsl.getDouble("t2")-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
+                t1[count] = ((rsl.getDouble("t1")-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
+                target[count] = ((rsl.getDouble("target")-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
                 
                 obj[0] = rsl.getString("tahun");
                 obj[1] = df.format(t5[count]);
@@ -650,6 +700,7 @@ public class Data extends javax.swing.JFrame {
         Helper helper = new Helper();
         int countRecords = helper.countRecords();
         double xNorm[][] = new double[50][50];
+        double xTemp[][] = new double[50][50];
         double t5[] = new double[50];
         double t4[] = new double[50];
         double t3[] = new double[50];
@@ -657,6 +708,30 @@ public class Data extends javax.swing.JFrame {
         double t1[] = new double[50];
         double target[] = new double[50];
         int count = 0;
+        
+        // for minmax
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl = stm.executeQuery("select * from datas");;
+            
+            while (rsl.next()) {
+                xTemp[count][0] = rsl.getDouble("t5");
+                xTemp[count][1] = rsl.getDouble("t4");
+                xTemp[count][2] = rsl.getDouble("t3");
+                xTemp[count][3] = rsl.getDouble("t2");
+                xTemp[count][4] = rsl.getDouble("t1");
+                xTemp[count][5] = rsl.getDouble("target");
+                count++;
+            }
+        
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil data\n"+e);
+        }
+        
+        double nilaiMin = helper.nilaiMin(xTemp, countRecords);
+        double nilaiMax = helper.nilaiMax(xTemp, countRecords);
         
         try {
             Statement stm = Connect.getConn().createStatement();
@@ -695,12 +770,12 @@ public class Data extends javax.swing.JFrame {
             while (rsl.next()) {
                 Object[] obj = new Object[8];
 
-                t5[count] = ((rsl.getDouble("t5")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
-                t4[count] = ((rsl.getDouble("t4")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
-                t3[count] = ((rsl.getDouble("t3")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
-                t2[count] = ((rsl.getDouble("t2")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
-                t1[count] = ((rsl.getDouble("t1")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
-                target[count] = ((rsl.getDouble("target")-helper.nilaiMin(xNorm, countRecords))*(1-(-1))/(helper.nilaiMax(xNorm, countRecords)-helper.nilaiMin(xNorm, countRecords)))-1;
+                t5[count] = ((rsl.getDouble("t5")-nilaiMin)*(1-(-1))/(nilaiMax-nilaiMin))-1;
+                t4[count] = ((rsl.getDouble("t4")-nilaiMin)*(1-(-1))/(nilaiMax-nilaiMin))-1;
+                t3[count] = ((rsl.getDouble("t3")-nilaiMin)*(1-(-1))/(nilaiMax-nilaiMin))-1;
+                t2[count] = ((rsl.getDouble("t2")-nilaiMin)*(1-(-1))/(nilaiMax-nilaiMin))-1;
+                t1[count] = ((rsl.getDouble("t1")-nilaiMin)*(1-(-1))/(nilaiMax-nilaiMin))-1;
+                target[count] = ((rsl.getDouble("target")-nilaiMin)*(1-(-1))/(nilaiMax-nilaiMin))-1;
                 
                 obj[0] = rsl.getString("tahun");
                 obj[1] = df.format(t5[count]);
@@ -870,6 +945,7 @@ public class Data extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonHapus;
+    private javax.swing.JButton buttonReset;
     private javax.swing.JButton buttonSimpan;
     private javax.swing.JButton buttonTambah;
     private javax.swing.JButton buttonUbah;
