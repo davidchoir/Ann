@@ -61,11 +61,12 @@ public class Testing extends javax.swing.JFrame {
         int countRecords = helper.countRecords();
         double setting[] = helper.readSetting(pilihAktivasi);
         
-        double nilai_max = setting[2];
-        double nilai_min = setting[1];
+        double nilaiMax = setting[2];
+        double nilaiMin = setting[1];
         double neuron_hidden = setting[0];
         int neuron_output = 1;
         int neuron_input = 5;
+        int count = 0;
         
         double akurasi[] = new double[50];
         double rataAkurasi = 0;
@@ -113,11 +114,16 @@ public class Testing extends javax.swing.JFrame {
             System.out.println("Gagal"+e);
         }
         
+        System.out.println(nilaiMin);
+        System.out.println(nilaiMax);
+        
         for (int i = 0; i < countRecords; i++) {
             for (int j = 0; j < 6; j++) {
-                x[i][j] = ((0.8*(xNorm[i][j]-nilai_min))/(nilai_max-nilai_min))+0.1;
-                t[i] = xNorm[i][5];
+                x[i][j] = ((xNorm[i][j]-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
+                t[i] = x[i][5];
             }
+            // System.out.println(x[i][0]+" | "+x[i][1]+" | "+x[i][2]+" | "+x[i][3]+" | "+x[i][4]+" | "+x[i][5]);
+            // System.out.println(xNorm[i][0]+" | "+xNorm[i][1]+" | "+xNorm[i][2]+" | "+xNorm[i][3]+" | "+xNorm[i][4]+" | "+xNorm[i][5]);
         }
         
         for (int i = 0; i < countRecords; i++) {
@@ -129,7 +135,7 @@ public class Testing extends javax.swing.JFrame {
                 double temp = 0;
                 for (int k = 0; k < neuron_input; k++) {
                     // System.out.println(v[i][j]);
-                    temp = temp + (x[i][k] * v[k][j]);
+                    temp = temp + (x[i][k] * v[j][k]);
                     // System.out.println(x[i][k]+" "+v[k][j]);
                 }
                 z_net[j] = vb[j] + temp;
@@ -147,7 +153,7 @@ public class Testing extends javax.swing.JFrame {
                 y_net[j] = wb[j] + temp;
                 y[j] = 1/(1+(Math.exp(-y_net[j])));
                 
-                hasil = (((y[j])*(nilai_max-nilai_min)))+(0.8*nilai_min);
+                hasil = ((nilaiMin*(1-0))+((y[j]-0)*(nilaiMax-nilaiMin)))/(1-0);
                 
             }
             /*
@@ -174,8 +180,6 @@ public class Testing extends javax.swing.JFrame {
             } else {
                 rsl = stm.executeQuery("select * from datas where kategori = '"+kategori+"'");
             }
-            
-            int count = 0;
             
             while (rsl.next()) {
                 Object[] obj = new Object[4];

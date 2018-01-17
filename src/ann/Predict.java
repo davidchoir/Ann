@@ -272,7 +272,7 @@ public class Predict extends javax.swing.JFrame {
                 double temp = 0;
                 for (int k = 0; k < neuron_input; k++) {
                     // System.out.println(v[i][j]);
-                    temp = temp + (x[i][k] * v[k][j]);
+                    temp = temp + (x[i][k] * v[j][k]);
                     // System.out.println(x[i][k]+" "+v[k][j]);
                 }
                 z_net[j] = vb[j] + temp;
