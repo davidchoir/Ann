@@ -74,6 +74,7 @@ public class Testing extends javax.swing.JFrame {
         double xNorm[][] = new double[50][50];
         double x[][] = new double[50][50];
         double t[] = new double[50];
+        double target[] = new double[50];
         double prediksi[] = new double[50];
         
         double v[][] = helper.readBobotHidden(neuron_hidden, neuron_input, pilihAktivasi);
@@ -90,7 +91,6 @@ public class Testing extends javax.swing.JFrame {
         int n = 0;
         try {
             Statement stm = Connect.getConn().createStatement();
-            // ResultSet rsl = stm.executeQuery("select * from datas");
             ResultSet rsl;
             if ("Semua Data".equals(kategori)) {
                 rsl = stm.executeQuery("select * from datas");
@@ -114,16 +114,12 @@ public class Testing extends javax.swing.JFrame {
             System.out.println("Gagal"+e);
         }
         
-        System.out.println(nilaiMin);
-        System.out.println(nilaiMax);
-        
         for (int i = 0; i < countRecords; i++) {
             for (int j = 0; j < 6; j++) {
                 x[i][j] = ((xNorm[i][j]-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
                 t[i] = x[i][5];
+                target[i] = xNorm[i][5];
             }
-            // System.out.println(x[i][0]+" | "+x[i][1]+" | "+x[i][2]+" | "+x[i][3]+" | "+x[i][4]+" | "+x[i][5]);
-            // System.out.println(xNorm[i][0]+" | "+xNorm[i][1]+" | "+xNorm[i][2]+" | "+xNorm[i][3]+" | "+xNorm[i][4]+" | "+xNorm[i][5]);
         }
         
         for (int i = 0; i < countRecords; i++) {
@@ -139,6 +135,7 @@ public class Testing extends javax.swing.JFrame {
                     // System.out.println(x[i][k]+" "+v[k][j]);
                 }
                 z_net[j] = vb[j] + temp;
+                // Hasil z dengan aktivasi sigmoid biner
                 z[j] = 1/(1+(Math.exp(-z_net[j])));
             }
             
@@ -151,24 +148,17 @@ public class Testing extends javax.swing.JFrame {
                     temp = temp + (z[k] * w[j][k]);
                 }
                 y_net[j] = wb[j] + temp;
+                // Hasil y dengan aktivasi sigmoid biner
                 y[j] = 1/(1+(Math.exp(-y_net[j])));
                 
-                hasil = ((nilaiMin*(1-0))+((y[j]-0)*(nilaiMax-nilaiMin)))/(1-0);
+                hasil = ((nilaiMin*(1-0))+((y[j]-(0))*(nilaiMax-nilaiMin)))/(1-0);
                 
             }
-            /*
-            prediksi[i] = hasil;
-            selisih[i] = Math.abs(hasil - t[i]);
-            rataSelisih = rataSelisih + selisih[i];
-            */
-            
             // MAPE
             prediksi[i] = hasil;
-            akurasi[i] = 100 - ((Math.abs(t[i]-hasil)/t[i]) * 100);
-            rataAkurasi = rataAkurasi + akurasi[i];
+            akurasi[i] = 100 - ((Math.abs(target[i]-prediksi[i])/target[i]) * 100);
             
-            // System.out.println(t[i]+" - "+hasil+" = "+akurasi[i]);
-            // System.out.println(hasil+" - "+t[i]+" = "+selisih[i]);
+            rataAkurasi = rataAkurasi + akurasi[i];
         }
         
         try {

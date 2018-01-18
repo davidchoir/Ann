@@ -202,7 +202,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonHelpActionPerformed
 
     private void buttonPredictionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPredictionActionPerformed
-        new Predict().setVisible(true);
+        new Prediction().setVisible(true);
     }//GEN-LAST:event_buttonPredictionActionPerformed
 
     /**
