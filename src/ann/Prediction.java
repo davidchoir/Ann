@@ -272,7 +272,7 @@ public class Prediction extends javax.swing.JFrame {
                 double temp = 0;
                 for (int k = 0; k < neuron_input; k++) {
                     // System.out.println(v[i][j]);
-                    temp = temp + (x[i][k] * v[j][k]);
+                    temp = temp + (x[0][k] * v[j][k]);
                     // System.out.println(x[i][k]+" "+v[k][j]);
                 }
                 z_net[j] = vb[j] + temp;
@@ -290,10 +290,6 @@ public class Prediction extends javax.swing.JFrame {
                 y_net[j] = wb[j] + temp;
                 y[j] = 1/(1+(Math.exp(-y_net[j])));
                 
-                // double hasil = (((y[j])*(str.nilai_max-str.nilai_min)))+(0.8*str.nilai_min);
-                // hasil = (((y[j])*(77-69)))+(0.8*69);
-                // hasil = (((y[j])*(nilai_max-nilai_min)))+(0.8*nilai_min);
-                
                 hasilNorm = y[j];
                 
                 // Denormalisasi bipolar
@@ -306,7 +302,7 @@ public class Prediction extends javax.swing.JFrame {
         x[0][4] = hasilNorm;
         tahun = tahun + 1;
 
-        System.out.println(x[0][0]+" - "+x[0][1]+" - "+x[0][2]+" - "+x[0][3]+" - "+x[0][4]);
+        // System.out.println(x[0][0]+" - "+x[0][1]+" - "+x[0][2]+" - "+x[0][3]+" - "+x[0][4]);
         
         Object[] obj = new Object[3];
 

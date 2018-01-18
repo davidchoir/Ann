@@ -116,8 +116,15 @@ public class Testing extends javax.swing.JFrame {
         
         for (int i = 0; i < countRecords; i++) {
             for (int j = 0; j < 6; j++) {
-                x[i][j] = ((xNorm[i][j]-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
+                
+                
+                if ("Sigmoid Biner".equals(aktivasi)) {
+                    x[i][j] = ((xNorm[i][j]-nilaiMin)*(1-0)/(nilaiMax-nilaiMin))-0;
                 t[i] = x[i][5];
+                } else {
+                    x[i][j] = ((xNorm[i][j]-nilaiMin)*(1-(-1))/(nilaiMax-nilaiMin))-1;
+                t[i] = x[i][5];
+                }
                 target[i] = xNorm[i][5];
             }
         }
@@ -135,8 +142,15 @@ public class Testing extends javax.swing.JFrame {
                     // System.out.println(x[i][k]+" "+v[k][j]);
                 }
                 z_net[j] = vb[j] + temp;
-                // Hasil z dengan aktivasi sigmoid biner
-                z[j] = 1/(1+(Math.exp(-z_net[j])));
+                
+                if ("Sigmoid Biner".equals(aktivasi)) {
+                    // Hasil z dengan aktivasi sigmoid biner
+                    z[j] = 1/(1+(Math.exp(-z_net[j])));
+                } else {
+                    // Hasil z dengan aktivasi sigmoid bipolar
+                    z[j] = (2/(1+(Math.exp(-z_net[j]))))-1;
+                }
+                
             }
             
             double y[] = new double[10];
@@ -148,11 +162,16 @@ public class Testing extends javax.swing.JFrame {
                     temp = temp + (z[k] * w[j][k]);
                 }
                 y_net[j] = wb[j] + temp;
-                // Hasil y dengan aktivasi sigmoid biner
-                y[j] = 1/(1+(Math.exp(-y_net[j])));
                 
-                hasil = ((nilaiMin*(1-0))+((y[j]-(0))*(nilaiMax-nilaiMin)))/(1-0);
-                
+                if ("Sigmoid Biner".equals(aktivasi)) {
+                    // Hasil y dengan aktivasi sigmoid biner
+                    y[j] = 1/(1+(Math.exp(-y_net[j])));
+                    hasil = ((nilaiMin*(1-0))+((y[j]-(0))*(nilaiMax-nilaiMin)))/(1-0);
+                } else {
+                    // Hasil y dengan aktivasi sigmoid bipolar
+                    y[j] = (2/(1+(Math.exp(-y_net[j]))))-1;
+                    hasil = ((nilaiMin*(1-(-1)))+((y[j]-(-1))*(nilaiMax-nilaiMin)))/(1-(-1));
+                }
             }
             // MAPE
             prediksi[i] = hasil;

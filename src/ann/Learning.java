@@ -850,14 +850,358 @@ public class Learning extends javax.swing.JFrame {
         helper.writeSetting(data, "Biner");
     }
     
+    private void sigmoidBipolar() {
+        // var data learning
+        double x[][] = new double[50][50];
+        double xNorm[][] = new double[50][50];
+        double xTemp[][] = new double[50][50];
+        double v[][] = new double[100][100];
+        double vb[] = new double[100];
+        double w[][] = new double[100][100];
+        double wb[] = new double[100];
+        double t[] = new double[50];
+        
+        // Test
+        double vTest[][] = {{0.1,0.2,0.3,0.4,0.5},{0.6,0.5,0.4,0.3,0.2}};
+        double vbTest[] = {0.6,0.1};
+        double wTest[][] = {{0.1,0.2}};
+        double wbTest[] = {0.3};
+        
+        // initialize
+        int n = 0;
+        int countRecords;
+        
+        // var data setting
+        double lr = Double.parseDouble(textLearningRate.getText());
+        int neuron_hidden = Integer.parseInt(textHiddenLayer.getText());
+        int neuron_output = 1;
+        int neuron_input = 5;
+        int loop = 0;
+        int epoch = Integer.parseInt(textEpoch.getText());
+        double target_error = Double.parseDouble(textTargetError.getText());
+        double last_mse;
+        
+        DecimalFormat df = new DecimalFormat("#.########");
+        int iterasi = Integer.parseInt(textTampilIterasi.getText());
+        Helper helper = new Helper();
+        countRecords = helper.countRecords("Data Latih");
+        int countAllRecords = helper.countRecords();
+        
+        // for minmax
+        int count = 0;
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl = stm.executeQuery("select * from datas");;
+            
+            while (rsl.next()) {
+                xTemp[count][0] = rsl.getDouble("t5");
+                xTemp[count][1] = rsl.getDouble("t4");
+                xTemp[count][2] = rsl.getDouble("t3");
+                xTemp[count][3] = rsl.getDouble("t2");
+                xTemp[count][4] = rsl.getDouble("t1");
+                xTemp[count][5] = rsl.getDouble("target");
+                count++;
+            }
+        
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil data\n"+e);
+        }
+        
+        double nilaiMin = helper.nilaiMin(xTemp, countAllRecords);
+        double nilaiMax = helper.nilaiMax(xTemp, countAllRecords);
+        
+        try {
+            Statement stm = Connect.getConn().createStatement();
+            ResultSet rsl = stm.executeQuery("select * from datas where kategori = 'Data Latih'");
+            
+            while (rsl.next()) {
+                xNorm[n][0] = rsl.getDouble("t5");
+                xNorm[n][1] = rsl.getDouble("t4");
+                xNorm[n][2] = rsl.getDouble("t3");
+                xNorm[n][3] = rsl.getDouble("t2");
+                xNorm[n][4] = rsl.getDouble("t1");
+                xNorm[n][5] = rsl.getDouble("target");
+                n++;
+            }
+        
+            rsl.close();
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil data\n"+e);
+        }
+        
+        for (int i = 0; i < countRecords; i++) {
+            for (int j = 0; j < 6; j++) {
+                x[i][j] =  x[i][j] = ((xNorm[i][j]-nilaiMin)*(1-(-1))/(nilaiMax-nilaiMin))-1;
+                t[i] = x[i][5];
+            }
+        }
+        
+        // Bobot statis
+        /*
+        for (int j = 0; j < neuron_hidden; j++) {
+            for (int k = 0; k < neuron_input; k++) {
+                // System.out.println("Bobot = ["+j+"]["+k+"]"+vTest[j][k]);
+                v[j][k] = vTest[j][k];
+            }
+            // System.out.println("Bias = ["+j+"]"+vbTest[j]);
+            vb[j] = vbTest[j];
+        }
+        
+        for (int j = 0; j < neuron_output; j++) {
+            for (int k = 0; k < neuron_hidden; k++) {
+                // System.out.println("Bobot = ["+j+"]["+k+"]"+wTest[j][k]);
+                w[j][k] = wTest[j][k];
+            }
+            // System.out.println("Bias = ["+j+"]"+wbTest[j]);
+            wb[j] = wbTest[j];
+        }
+        */
+        // Random bobot
+        
+        for (int j = 0; j < neuron_hidden; j++) {
+            for (int k = 0; k < neuron_input; k++) {
+                v[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
+                // System.out.println("Bobot = ["+j+"]["+k+"]"+v[j][k]);
+            }
+            vb[j] = ThreadLocalRandom.current().nextDouble(-1, 1);
+            // System.out.println("Bias = ["+j+"]"+vb[j]);
+        }
+        
+        for (int j = 0; j < neuron_output; j++) {
+            for (int k = 0; k < neuron_hidden; k++) {
+                w[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
+                // System.out.println("Bobot = ["+j+"]["+k+"]"+w[j][k]);
+            }
+            wb[j] = ThreadLocalRandom.current().nextDouble(-1, 1);
+            // System.out.println("Bias = ["+j+"]"+wb[j]);
+        }
+        
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        do {
+            double temp_mse[] = new double[50];
+            double mse = 0;
+            
+            // view step by step
+            textAreaMse.update(textAreaMse.getGraphics());
+            textAreaHidden.update(textAreaHidden.getGraphics());
+            textAreaOutput.update(textAreaOutput.getGraphics());
+            
+            for (int i = 0; i < countRecords; i++) {
+                
+                // Input layer
+                double z[] = new double[10];
+                for (int j = 0; j < neuron_hidden; j++) {
+                    double z_net[] = new double[10];
+                    double temp = 0;
+                    for (int k = 0; k < neuron_input; k++) {
+                        temp = temp + (x[i][k] * v[j][k]);
+                        // System.out.println(x[i][k]+" * "+v[j][k]);
+                        // System.out.println(i+" "+k+" = "+x[i][k]);
+                        // System.out.println("temp = "+temp);
+                    }
+                    // Hasil z_net + bias
+                    z_net[j] = vb[j] + temp;
+                    // System.out.println(vb[j]);
+                    // System.out.println(temp);
+                    // System.out.println("z_net["+j+"] = "+z_net[j]);
+
+                    // Hasil z dengan aktivasi sigmoid bipolar
+                    z[j] = (2/(1+(Math.exp(-z_net[j]))))-1;
+                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                        // textAreaZ.append("Nilai z["+j+"] = "+df.format(z[j])+"\n");
+                    }
+                    // System.out.println("z["+j+"] = "+z[j]);
+                }
+                if ((loop % iterasi) == 0) {
+                    // textAreaZ.append("---------------------------------------\n");
+                }
+
+                // Output layer
+                double y[] = new double[10];
+                for (int j = 0; j < neuron_output; j++) {
+                    double y_net[] = new double[10];
+                    double temp = 0;
+
+                    for (int k = 0; k < neuron_hidden; k++) {
+                        temp = temp + (z[k] * w[j][k]);
+                        // System.out.println(z[k]+" * "+w[j][k]);
+                        // System.out.println(temp);
+                    }
+                    y_net[j] = wb[j] + temp;
+                    // Hasil y dengan aktivasi sigmoid bipolar
+                    y[j] = (2/(1+(Math.exp(-y_net[j]))))-1;
+                    
+                    // System.out.println(wb[j]);
+                    // System.out.println(y_net[j]);
+                    // System.out.println(y[j]);
+                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                        // textAreaY.append("Nilai y = "+df.format(y[j])+"\n");
+                    }
+                    temp_mse[i] = Math.pow((y[j]-t[i]), 2)/countRecords;
+                }
+                
+                mse = mse + temp_mse[i];
+
+                // Error y dan delta w
+                double error_y[] = new double[10];
+                double Aw[][] = new double[10][10];
+                double Awb[] = new double[10];
+
+                for (int j = 0; j < neuron_output; j++) {
+                    // Error y
+                    error_y[j] = (t[i] - y[j]) * ((1 + y[j]) * (1 - y[j])/2);
+                    // System.out.println("("+t[i]+" - "+y[j]+") ("+y[j]+") (1 - "+y[j]);
+                    // System.out.println("Error output = "+error_y[j]);
+
+                    for (int k = 0; k < neuron_hidden; k++) {
+                        // Delta bobot
+                        Aw[j][k] = lr * error_y[j] * z[k];
+                        // System.out.println("Aw["+j+"]["+k+"] = "+Aw[j][k]);
+                    }
+                    // Delta bobot bias
+                    Awb[j] = lr * error_y[j];
+                    // System.out.println("Awb["+j+"] = "+Awb[j]);
+                }
+
+                // Error y_net
+                double error_ynet[] = new double[10];
+                double error_z[] = new double[10];
+                double Av[][] = new double[10][10];
+                double Avb[] = new double[10];
+
+                for (int j = 0; j < neuron_hidden; j++) {
+                    for (int k = 0; k < neuron_output; k++) {
+                        // faktor kesalahan y_net
+                        error_ynet[j] = error_y[k] * w[k][j];
+                        // System.out.println("Error y_net = "+error_ynet[j]);
+                    }
+                    // faktor kesalahan z
+                    error_z[j] = error_ynet[j] * ((1 + y[j]) * (1 - y[j])/2);
+                    // System.out.println("Error z = "+error_z[j]);
+
+                    for (int k = 0; k < neuron_input; k++) {
+                        // Suku perubahan bobot hidden
+                        Av[k][j] = lr * error_z[j] * x[i][k];
+                        // System.out.println("Av["+k+"]["+j+"] = "+Av[k][j]);
+                        // System.out.println(lr+" * "+error_z[j]+" * "+x[i][k]+" = "+Av[k][j]);
+                    }
+                    // Suku perubahan bobot bias
+                    Avb[j] = lr * error_z[j];
+                    // System.out.println("Avb["+j+"] = "+Avb[j]);
+                    // System.out.println(lr+" * "+error_z[j]+" = "+Avb[j]);
+                }
+
+                // update bobot output
+                for (int j = 0; j < neuron_output; j++) {
+                    for (int k = 0; k < neuron_hidden; k++) {
+                        // update z
+                        w[j][k] = w[j][k] + Aw[j][k];
+                        // System.out.println("Bobot output = "+Aw[j][k]+" = "+w[j][k]);
+                        // System.out.println(w[j][k]+" + "+Aw[j][k]+" = "+w[j][k]);
+                        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                            textAreaOutput.append("Bobot output["+j+"]["+k+"] = "+df.format(w[j][k])+"\n");
+                        }
+                        // helper.writeBobotOutput(w, neuron_output, neuron_hidden, "Bipolar");
+                    }
+                    // update bias
+                    wb[j] = wb[j] + Awb[j];
+                    // System.out.println("Bias Output = "+Awb[j]+" = "+wb[j]);
+                    // System.out.println(wb[j]+" + "+Awb[j]+" = "+wb[j]);
+                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                        textAreaOutput.append("Bias Output["+j+"] = "+df.format(wb[j])+"\n---------------------------------------\n");
+                    }
+                    // helper.writeBiasOutput(wb, neuron_output, "Bipolar");
+                }
+                
+                // update bobot hidden
+                for (int j = 0; j < neuron_hidden; j++) {
+                    for (int k = 0; k < neuron_input; k++) {
+                        // update z
+                        v[j][k] = v[j][k] + Av[k][j];
+                        // System.out.println("Bobot Hidden = "+Av[k][j]+" = "+v[k][j]);
+                        // System.out.println(v[j][k]+" + "+Av[k][j]+" = "+v[j][k]);
+                        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                            textAreaHidden.append("Bobot Hidden["+k+"]["+j+"] = "+df.format(v[k][j])+"\n");
+                        }
+                        // helper.writeBobotHidden(v, neuron_hidden, neuron_input, "Bipolar");
+                    }
+                    // update bias
+                    vb[j] = vb[j] + Avb[j];
+                    // System.out.println("Bias Hidden = "+Avb[j]+" = "+vb[j]);
+                    // System.out.println("bias : "+vb[j]+" + "+Avb[j]+" = "+vb[j]);
+                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+                        textAreaHidden.append("Bias Hidden["+j+"] = "+df.format(vb[j])+"\n----------------------------------------\n");
+                    }
+                    // helper.writeBiasHidden(vb, neuron_hidden, "Bipolar");
+                }
+            // Akhir for i
+            }
+        
+        // System.out.println("MSE "+loop+" = "+mse);
+        
+        // Tampil perubahan bobot
+        
+        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
+            textAreaMse.append("MSE ["+loop+"] = "+df.format(mse)+"\n");
+        }
+        
+        last_mse = mse;
+        loop++;
+        
+        // for graph
+        dataset.setValue(new Double(mse), "Values", new Integer(loop));
+        
+        } while (loop < epoch && target_error < last_mse);
+        System.out.println();
+        // System.out.println("Last MSE = "+last_mse);
+        // System.out.println("Epoch = "+loop);
+        labelIterasi.update(labelIterasi.getGraphics());
+        labelIterasi.setText(""+loop);
+        labelMse.setText(""+df.format(last_mse));
+        
+        JFreeChart chart = ChartFactory.createLineChart("Grafik Prediksi", "Tahun", "IPM", dataset);
+        
+        ChartFrame frame = new ChartFrame("Bar Chart", chart);
+        frame.setVisible(true);
+        frame.setSize(700,550);
+        
+        // save bobot output
+        for (int j = 0; j < neuron_output; j++) {
+            for (int k = 0; k < neuron_hidden; k++) {
+                helper.writeBobotOutput(w, neuron_output, neuron_hidden, "Bipolar");
+            }
+            helper.writeBiasOutput(wb, neuron_output, "Bipolar");
+        }
+
+        // save bobot hidden
+        for (int j = 0; j < neuron_hidden; j++) {
+            for (int k = 0; k < neuron_input; k++) {
+                helper.writeBobotHidden(v, neuron_hidden, neuron_input, "Bipolar");
+            }
+            helper.writeBiasHidden(vb, neuron_hidden, "Bipolar");
+        }
+        
+        // save setting
+        double data[] = new double[3];
+        data[0] = neuron_hidden;
+        data[1] = nilaiMin;
+        data[2] = nilaiMax;
+        
+        helper.writeSetting(data, "Bipolar");
+    }
+    
     private void resetData() {
         textAreaHidden.setText("");
         textAreaOutput.setText("");
         textAreaMse.setText("");
-//        textHiddenLayer.setText("");
-//        textEpoch.setText("");
-//        textLearningRate.setText("");
-//        textTargetError.setText("");
+        // textHiddenLayer.setText("");
+        // textEpoch.setText("");
+        // textLearningRate.setText("");
+        // textTargetError.setText("");
     }
     
     private void getLearningData() {
@@ -916,276 +1260,6 @@ public class Learning extends javax.swing.JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
         }
-    }
-    
-    private void sigmoidBipolar(){
-        // var data learning
-        double x[][] = new double[50][50];
-        double xNorm[][] = new double[50][50];
-        double v[][] = new double[100][100];
-        double vb[] = new double[100];
-        double w[][] = new double[100][100];
-        double wb[] = new double[100];
-        double t[] = new double[50];
-        
-        // initialize
-        int n = 0;
-        int countRecords;
-        
-        // var data setting
-        double lr = Double.parseDouble(textLearningRate.getText());
-        int neuron_hidden = Integer.parseInt(textHiddenLayer.getText());
-        int neuron_output = 1;
-        int neuron_input = 5;
-        int loop = 0;
-        int epoch = Integer.parseInt(textEpoch.getText());
-        double target_error = Double.parseDouble(textTargetError.getText());
-        double last_mse;
-      
-        DecimalFormat df = new DecimalFormat("#.####");
-        int iterasi = Integer.parseInt(textTampilIterasi.getText());
-        Helper help = new Helper();
-        countRecords = help.countRecords("Data Latih");
-        
-        try {
-            Statement stm = Connect.getConn().createStatement();
-            ResultSet rsl = stm.executeQuery("select * from datas where kategori = 'Data Latih'");
-            
-            while (rsl.next()) {
-                xNorm[n][0] = rsl.getDouble("t5");
-                xNorm[n][1] = rsl.getDouble("t4");
-                xNorm[n][2] = rsl.getDouble("t3");
-                xNorm[n][3] = rsl.getDouble("t2");
-                xNorm[n][4] = rsl.getDouble("t1");
-                xNorm[n][5] = rsl.getDouble("target");
-                n++;
-            }
-        
-            rsl.close();
-            stm.close();
-        } catch (SQLException e) {
-            System.out.println("Gagal mengambil data\n"+e);
-        }
-        
-        for (int i = 0; i < countRecords; i++) {
-            for (int j = 0; j < 6; j++) {
-                x[i][j] = ((xNorm[i][j]-help.nilaiMin(xNorm, countRecords))*(1-(-1))/(help.nilaiMax(xNorm, countRecords)-help.nilaiMin(xNorm, countRecords)))-1;
-                t[i] = x[i][5];
-            }
-        }
-        
-        // Random bobot
-        for (int j = 0; j < neuron_hidden; j++) {
-            for (int k = 0; k < neuron_input; k++) {
-                v[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
-                // System.out.println("Bobot = "+v[j][k]);
-            }
-            vb[j] = ThreadLocalRandom.current().nextDouble(-1, 1);
-            // System.out.println("Bias = "+vb[j]);
-        }
-        
-        for (int j = 0; j < neuron_output; j++) {
-            for (int k = 0; k < neuron_hidden; k++) {
-                w[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
-                // System.out.println("Bobot = "+w[j][k]);
-            }
-            wb[j] = ThreadLocalRandom.current().nextDouble(-1, 1);
-            // System.out.println("Bias = "+wb[j]);
-        }
-        
-        /*
-        // Random bobot
-        for (int j = 0; j < neuron_hidden; j++) {
-            for (int k = 0; k < neuron_input; k++) {
-                v[j][k] = Math.random();
-                System.out.println("Bobot = "+v[j][k]);
-            }
-            vb[j] = Math.random();
-            System.out.println("Bias = "+vb[j]);
-        }
-        
-        for (int j = 0; j < neuron_output; j++) {
-            for (int k = 0; k < neuron_hidden; k++) {
-                w[j][k] = Math.random();
-                System.out.println("Bobot = "+w[j][k]);
-            }
-            wb[j] = Math.random();
-            System.out.println("Bias = "+wb[j]);
-        }
-        */
-        
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        
-        do {
-            double temp_mse[] = new double[50];
-            double mse = 0;
-            
-            // view step by step
-            textAreaMse.update(textAreaMse.getGraphics());
-            textAreaHidden.update(textAreaHidden.getGraphics());
-            textAreaOutput.update(textAreaOutput.getGraphics());
-            
-            for (int i = 0; i < countRecords; i++) {
-                
-                // Input layer
-                double z[] = new double[10];
-                for (int j = 0; j < neuron_hidden; j++) {
-                    double z_net[] = new double[10];
-                    double temp = 0;
-                    for (int k = 0; k < neuron_input; k++) {
-                        temp = temp + (x[i][k] * v[k][j]);
-                        // System.out.println(i+" "+k+" = "+x[i][k]);
-                    }
-                    // Hasil z_net + bias
-                    z_net[j] = vb[j] + temp;
-                    // System.out.println("z_net["+j+"] = "+z_net[j]);
-
-                    // Hasil z dengan aktivasi sigmoid bipolar
-                    z[j] = (2/(1+(Math.exp(-z_net[j]))))-1;
-                    // System.out.println("z["+j+"] = "+z[j]);
-                }
-
-                // Output layer
-                double y[] = new double[10];
-                for (int j = 0; j < neuron_output; j++) {
-                    double y_net[] = new double[10];
-                    double temp = 0;
-
-                    for (int k = 0; k < neuron_hidden; k++) {
-                        temp = temp + (z[k] * w[j][k]);
-                    }
-                    y_net[j] = wb[j] + temp;
-                    y[j] = (2/(1+(Math.exp(-y_net[j]))))-1;
-
-                    temp_mse[i] = Math.pow((y[j]-t[i]), 2)/countRecords;
-                }
-                
-                mse = mse + temp_mse[i];
-
-                // Error y dan delta w
-                double error_y[] = new double[10];
-                double Aw[][] = new double[10][10];
-                double Awb[] = new double[10];
-
-                for (int j = 0; j < neuron_output; j++) {
-                    // Error y
-                    error_y[j] = (t[i] - y[j]) * ((1 + y[j]) * (1 - y[j])/2);
-                    // System.out.println("Error output = "+error_y[j]);
-
-                    for (int k = 0; k < neuron_hidden; k++) {
-                        // Delta bobot
-                        Aw[j][k] = lr * error_y[j] * z[k];
-                        // System.out.println("Aw["+j+"]["+k+"] = "+Aw[j][k]);
-                    }
-                    // Delta bobot bias
-                    Awb[j] = lr * error_y[j];
-                    // System.out.println("Awb["+j+"] = "+Awb[j]);
-                }
-
-                // Error y_net
-                double error_ynet[] = new double[10];
-                double error_z[] = new double[10];
-                double Av[][] = new double[10][10];
-                double Avb[] = new double[10];
-
-                for (int j = 0; j < neuron_hidden; j++) {
-                    for (int k = 0; k < neuron_output; k++) {
-                        // faktor kesalahan y_net
-                        error_ynet[j] = error_y[k] * w[k][j];
-                        // System.out.println("Error y_net = "+error_ynet[j]);
-                    }
-                    // faktor kesalahan z
-                    error_z[j] = error_ynet[j] * ((1 + y[j]) * (1 - y[j])/2);
-                    // System.out.println("Error z = "+error_z[j]);
-
-                    for (int k = 0; k < neuron_input; k++) {
-                        // Suku perubahan bobot hidden
-                        Av[k][j] = lr * error_z[j] * x[i][k];
-                    }
-                    // Suku perubahan bobot bias
-                    Avb[j] = lr * error_z[j];
-                    // System.out.println("Av["+j+"] = "+Avb[j]);
-                }
-
-                // update bobot output
-                for (int j = 0; j < neuron_output; j++) {
-                    for (int k = 0; k < neuron_hidden; k++) {
-                        // update z
-                        w[j][k] = w[j][k] + Aw[j][k];
-                        // System.out.println("Bobot output = "+Aw[j][k]+" = "+w[j][k]);
-                        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-                            textAreaOutput.append("Bobot output["+j+"]["+k+"] = "+df.format(w[j][k])+"\n");
-                        }
-                        help.writeBobotOutput(w, neuron_output, neuron_hidden, "Bipolar");
-                    }
-                    // update bias
-                    wb[j] = wb[j] + Awb[j];
-                    // System.out.println("Bias Output = "+Awb[j]+" = "+wb[j]);
-                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-                        textAreaOutput.append("Bias Output["+j+"] = "+df.format(wb[j])+"\n---------------------------------------\n");
-                    }
-                    help.writeBiasOutput(wb, neuron_output, "Bipolar");
-                }
-                
-                // update bobot hidden
-                for (int j = 0; j < neuron_hidden; j++) {
-                    for (int k = 0; k < neuron_input; k++) {
-                        // update z
-                        v[k][j] = v[k][j] + Av[k][j];
-                        // System.out.println("Bobot Hidden = "+Av[k][j]+" = "+v[k][j]);
-                        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-                            textAreaHidden.append("Bobot Hidden["+k+"]["+j+"] = "+df.format(v[k][j])+"\n");
-                        }
-                        help.writeBobotHidden(v, neuron_hidden, neuron_input, "Bipolar");
-                    }
-                    // update bias
-                    vb[j] = vb[j] + Avb[j];
-                    // System.out.println("Bias Hidden = "+Avb[j]+" = "+vb[j]);
-                    if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-                        textAreaHidden.append("Bias Hidden["+j+"] = "+df.format(vb[j])+"\n----------------------------------------\n");
-                    }
-                    help.writeBiasHidden(vb, neuron_hidden, "Bipolar");
-                }
-            // Akhir for i
-            }
-        
-        // System.out.println("MSE "+loop+" = "+mse);
-        
-        if ((loop % iterasi) == 0 || (loop == (epoch - 1))) {
-            textAreaMse.append("MSE ["+loop+"] = "+df.format(mse)+"\n");
-            textAreaHidden.append("Epoch ["+loop+"]\n======================\n");
-            textAreaOutput.append("Epoch ["+loop+"]\n======================\n");
-        }
-        
-        last_mse = mse;
-        loop++;
-        
-        // for graph
-        dataset.setValue(new Double(mse), "Values", new Integer(loop));
-        
-        } while (loop < epoch && target_error < last_mse);
-        System.out.println();
-        // System.out.println("Last MSE = "+last_mse);
-        // System.out.println("Epoch = "+loop);
-        labelIterasi.update(labelIterasi.getGraphics());
-        labelIterasi.setText(""+loop);
-        labelMse.setText(""+df.format(last_mse));
-        
-        JFreeChart chart = ChartFactory.createLineChart("Grafik MSE", "Epoch", "Nilai MSE", dataset);
-        
-        ChartFrame frame = new ChartFrame("Bar Chart", chart);
-        frame.setVisible(true);
-        frame.setSize(700,550);
-        
-        // save setting
-        double nilai_min = help.nilaiMin(xNorm, countRecords);
-        double nilai_max = help.nilaiMax(xNorm, countRecords);
-        double data[] = new double[3];
-        data[0] = neuron_hidden;
-        data[1] = nilai_min;
-        data[2] = nilai_max;
-        
-        help.writeSetting(data, "Bipolar");
     }
     
     /**
