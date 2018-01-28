@@ -816,7 +816,6 @@ public class Data extends javax.swing.JFrame {
         double t1 = Double.parseDouble(textT1.getText());
         double t = Double.parseDouble(textTarget.getText());
         String kategori = (String) comboKategori.getSelectedItem();
-        int id = 0;
         
         try {
             Statement stm;

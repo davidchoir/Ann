@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2017 at 10:30 AM
+-- Generation Time: Jan 28, 2018 at 11:30 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -61,6 +61,31 @@ INSERT INTO `datas` (`tahun`, `t5`, `t4`, `t3`, `t2`, `t1`, `target`, `kategori`
 ('2014', 75.23, 75.37, 75.93, 76.15, 76.44, 76.81, 'Data Uji'),
 ('2015', 75.37, 75.93, 76.15, 76.44, 76.81, 77.59, 'Data Uji'),
 ('2016', 75.93, 76.15, 76.44, 76.81, 77.59, 78.38, 'Data Uji');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `learnings`
+--
+
+CREATE TABLE IF NOT EXISTS `learnings` (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `arsitektur` varchar(5) NOT NULL,
+  `lr` double NOT NULL,
+  `epoch` int(6) NOT NULL,
+  `mse` double NOT NULL,
+  `akurasi_latih` double NOT NULL,
+  `akurasi_uji` double NOT NULL,
+  `aktivasi` enum('Biner','Bipolar') NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `learnings`
+--
+
+INSERT INTO `learnings` (`id`, `arsitektur`, `lr`, `epoch`, `mse`, `akurasi_latih`, `akurasi_uji`, `aktivasi`) VALUES
+(1, '5-3-1', 0.1, 1000, 0.00365803, 99.43, 98.38, 'Biner');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

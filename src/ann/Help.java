@@ -36,7 +36,6 @@ public class Help extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bantuan");
@@ -90,7 +89,7 @@ public class Help extends javax.swing.JFrame {
         jTextArea2.setEditable(false);
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
-        jTextArea2.setText("1. Form Data\nMenampilkan Data:\n*) Data dapat ditampilkan dengan filter semua data, data latih\n   dan data uji dengan memilih menu dropdown tampilankan data\n*) Transformasi data dapat ditampilkan dengan memilih menu\n   dropdown scalling[0,1] dan scalling[-1,1]\n\nMenambahkan Data Baru:\n*) Untuk memulai memasukkan data baru klik tombol tambah data\n*) Data  Tahun dan T-5 sampai T-1 akan secara otomatis terisi\n*) Kategori merupakan pengelompokan data apakah termasuk dalam\n   kategori data latih atau data ujji\n*) Target merupakan nilai IPM sesuai tahun yang muncul pada kolom\n   tahun\n*} Klik simpan untuk menyimpan data\n\nMengubah Data:\n*) Untuk mengubah data klik pada tabel atas sesuai dengan data\n   yang ingin diubah\n*) Ubah data pada masing-masing field\n*) Klik ubah untuk mengubah data\n\nMenghapus Data:\n*) Untuk menghapus data klik pada tabel atas sesuai dengan data\n   yang ingin dihapus\n*) Klik hapus untuk menghapus data");
+        jTextArea2.setText("1. Form Data\nMenampilkan Data:\n*) Data dapat ditampilkan dengan filter semua data, data latih\n   dan data uji dengan memilih menu dropdown tampilankan data\n*) Transformasi data dapat ditampilkan dengan memilih menu\n   dropdown scalling[0,1] dan scalling[-1,1]\n\nMenambahkan Data Baru:\n*) Untuk memulai memasukkan data baru klik tombol tambah data\n*) Data  Tahun dan T-5 sampai T-1 akan secara otomatis terisi\n*) Kategori merupakan pengelompokan data apakah termasuk dalam\n   kategori data latih atau data ujji\n*) Target merupakan nilai IPM sesuai tahun yang muncul pada kolom\n   tahun\n*} Klik simpan untuk menyimpan data\n\nMengubah Data:\n*) Untuk mengubah data klik pada tabel atas sesuai dengan data\n   yang ingin diubah\n*) Ubah data pada masing-masing field\n*) Klik ubah untuk mengubah data\n\nMenghapus Data:\n*) Untuk menghapus data klik pada tabel atas sesuai dengan data\n   yang ingin dihapus\n*) Klik hapus untuk menghapus data\n\n2. Form Latih\n*) Isi semua parameter susuai kebutuhan\n*) Klik tombol latih");
         jScrollPane2.setViewportView(jTextArea2);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -110,7 +109,6 @@ public class Help extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Bantuan", jPanel3);
-        jTabbedPane1.addTab("Tentang", jTabbedPane2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -176,7 +174,6 @@ public class Help extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel labelBantuan;

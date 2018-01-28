@@ -81,6 +81,7 @@ public class Learning extends javax.swing.JFrame {
         buttonReset = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         comboAktivasi = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -139,7 +140,7 @@ public class Learning extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Target Galat");
+        jLabel6.setText("Batas MSE");
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -203,25 +204,50 @@ public class Learning extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Simpan bobot");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(93, 93, 93)
+                .addComponent(jLabel8)
+                .addGap(0, 102, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(60, 60, 60)
+                                .addComponent(jLabel11))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel13))
+                        .addGap(80, 80, 80)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelMse)
+                            .addComponent(labelIterasi))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(buttonLatih, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(textTampilIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel5)
@@ -234,7 +260,6 @@ public class Learning extends javax.swing.JFrame {
                                     .addComponent(textTargetError)
                                     .addComponent(textLearningRate)
                                     .addComponent(textEpoch, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
@@ -242,26 +267,14 @@ public class Learning extends javax.swing.JFrame {
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel15)
                                             .addComponent(jLabel7)))
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel12)
-                                            .addComponent(jLabel13))
-                                        .addGap(80, 80, 80)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(labelMse)
-                                            .addComponent(labelIterasi))))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(0, 133, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(textTampilIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(19, 19, 19))))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(jLabel8))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(jLabel11)))
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,10 +307,12 @@ public class Learning extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboAktivasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonLatih)
                     .addComponent(buttonReset))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
@@ -310,7 +325,7 @@ public class Learning extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(labelMse))
-                .addGap(58, 58, 58))
+                .addGap(22, 22, 22))
         );
 
         jPanel3.setBackground(new java.awt.Color(0, 171, 169));
@@ -359,10 +374,12 @@ public class Learning extends javax.swing.JFrame {
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
+        textAreaHidden.setEditable(false);
         textAreaHidden.setColumns(20);
         textAreaHidden.setRows(5);
         jScrollPane1.setViewportView(textAreaHidden);
 
+        textAreaOutput.setEditable(false);
         textAreaOutput.setColumns(20);
         textAreaOutput.setRows(5);
         jScrollPane2.setViewportView(textAreaOutput);
@@ -390,6 +407,7 @@ public class Learning extends javax.swing.JFrame {
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
+        textAreaMse.setEditable(false);
         textAreaMse.setColumns(20);
         textAreaMse.setRows(5);
         jScrollPane3.setViewportView(textAreaMse);
@@ -507,6 +525,10 @@ public class Learning extends javax.swing.JFrame {
         // TO DO Something
     }//GEN-LAST:event_comboAktivasiActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        saveBobot();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void sigmoidBiner() {
         // var data learning
         double x[][] = new double[50][50];
@@ -530,13 +552,13 @@ public class Learning extends javax.swing.JFrame {
         
         // var data setting
         double lr = Double.parseDouble(textLearningRate.getText());
-        int neuron_hidden = Integer.parseInt(textHiddenLayer.getText());
-        int neuron_output = 1;
-        int neuron_input = 5;
+        int neuronHidden = Integer.parseInt(textHiddenLayer.getText());
+        int neuronOutput = 1;
+        int neuronInput = 5;
         int loop = 0;
         int epoch = Integer.parseInt(textEpoch.getText());
-        double target_error = Double.parseDouble(textTargetError.getText());
-        double last_mse;
+        double batasError = Double.parseDouble(textTargetError.getText());
+        double lastMse;
         
         DecimalFormat df = new DecimalFormat("#.########");
         int iterasi = Integer.parseInt(textTampilIterasi.getText());
@@ -618,8 +640,8 @@ public class Learning extends javax.swing.JFrame {
         */
         // Random bobot
         
-        for (int j = 0; j < neuron_hidden; j++) {
-            for (int k = 0; k < neuron_input; k++) {
+        for (int j = 0; j < neuronHidden; j++) {
+            for (int k = 0; k < neuronInput; k++) {
                 v[j][k] = ThreadLocalRandom.current().nextDouble(0, 1);
                 // System.out.println("Bobot = ["+j+"]["+k+"]"+v[j][k]);
             }
@@ -627,8 +649,8 @@ public class Learning extends javax.swing.JFrame {
             // System.out.println("Bias = ["+j+"]"+vb[j]);
         }
         
-        for (int j = 0; j < neuron_output; j++) {
-            for (int k = 0; k < neuron_hidden; k++) {
+        for (int j = 0; j < neuronOutput; j++) {
+            for (int k = 0; k < neuronHidden; k++) {
                 w[j][k] = ThreadLocalRandom.current().nextDouble(0, 1);
                 // System.out.println("Bobot = ["+j+"]["+k+"]"+w[j][k]);
             }
@@ -651,10 +673,10 @@ public class Learning extends javax.swing.JFrame {
                 
                 // Input layer
                 double z[] = new double[10];
-                for (int j = 0; j < neuron_hidden; j++) {
+                for (int j = 0; j < neuronHidden; j++) {
                     double z_net[] = new double[10];
                     double temp = 0;
-                    for (int k = 0; k < neuron_input; k++) {
+                    for (int k = 0; k < neuronInput; k++) {
                         temp = temp + (x[i][k] * v[j][k]);
                         // System.out.println(x[i][k]+" * "+v[j][k]);
                         // System.out.println(i+" "+k+" = "+x[i][k]);
@@ -679,11 +701,11 @@ public class Learning extends javax.swing.JFrame {
 
                 // Output layer
                 double y[] = new double[10];
-                for (int j = 0; j < neuron_output; j++) {
+                for (int j = 0; j < neuronOutput; j++) {
                     double y_net[] = new double[10];
                     double temp = 0;
 
-                    for (int k = 0; k < neuron_hidden; k++) {
+                    for (int k = 0; k < neuronHidden; k++) {
                         temp = temp + (z[k] * w[j][k]);
                         // System.out.println(z[k]+" * "+w[j][k]);
                         // System.out.println(temp);
@@ -707,13 +729,13 @@ public class Learning extends javax.swing.JFrame {
                 double Aw[][] = new double[10][10];
                 double Awb[] = new double[10];
 
-                for (int j = 0; j < neuron_output; j++) {
+                for (int j = 0; j < neuronOutput; j++) {
                     // Error y
                     error_y[j] = (t[i] - y[j]) * y[j] * (1 - y[j]);
                     // System.out.println("("+t[i]+" - "+y[j]+") ("+y[j]+") (1 - "+y[j]);
                     // System.out.println("Error output = "+error_y[j]);
 
-                    for (int k = 0; k < neuron_hidden; k++) {
+                    for (int k = 0; k < neuronHidden; k++) {
                         // Delta bobot
                         Aw[j][k] = lr * error_y[j] * z[k];
                         // System.out.println("Aw["+j+"]["+k+"] = "+Aw[j][k]);
@@ -729,8 +751,8 @@ public class Learning extends javax.swing.JFrame {
                 double Av[][] = new double[10][10];
                 double Avb[] = new double[10];
 
-                for (int j = 0; j < neuron_hidden; j++) {
-                    for (int k = 0; k < neuron_output; k++) {
+                for (int j = 0; j < neuronHidden; j++) {
+                    for (int k = 0; k < neuronOutput; k++) {
                         // faktor kesalahan y_net
                         error_ynet[j] = error_y[k] * w[k][j];
                         // System.out.println("Error y_net = "+error_ynet[j]);
@@ -739,7 +761,7 @@ public class Learning extends javax.swing.JFrame {
                     error_z[j] = error_ynet[j] * z[j] * (1 - z[j]);
                     // System.out.println("Error z = "+error_z[j]);
 
-                    for (int k = 0; k < neuron_input; k++) {
+                    for (int k = 0; k < neuronInput; k++) {
                         // Suku perubahan bobot hidden
                         Av[k][j] = lr * error_z[j] * x[i][k];
                         // System.out.println("Av["+k+"]["+j+"] = "+Av[k][j]);
@@ -752,8 +774,8 @@ public class Learning extends javax.swing.JFrame {
                 }
 
                 // update bobot output
-                for (int j = 0; j < neuron_output; j++) {
-                    for (int k = 0; k < neuron_hidden; k++) {
+                for (int j = 0; j < neuronOutput; j++) {
+                    for (int k = 0; k < neuronHidden; k++) {
                         // update z
                         w[j][k] = w[j][k] + Aw[j][k];
                         // System.out.println("Bobot output = "+Aw[j][k]+" = "+w[j][k]);
@@ -774,8 +796,8 @@ public class Learning extends javax.swing.JFrame {
                 }
                 
                 // update bobot hidden
-                for (int j = 0; j < neuron_hidden; j++) {
-                    for (int k = 0; k < neuron_input; k++) {
+                for (int j = 0; j < neuronHidden; j++) {
+                    for (int k = 0; k < neuronInput; k++) {
                         // update z
                         v[j][k] = v[j][k] + Av[k][j];
                         // System.out.println("Bobot Hidden = "+Av[k][j]+" = "+v[k][j]);
@@ -805,47 +827,50 @@ public class Learning extends javax.swing.JFrame {
             textAreaMse.append("MSE ["+loop+"] = "+df.format(mse)+"\n");
         }
         
-        last_mse = mse;
+        lastMse = mse;
         loop++;
         
         // for graph
         dataset.setValue(new Double(mse), "Values", new Integer(loop));
         
-        } while (loop < epoch && target_error < last_mse);
+        } while (loop < epoch && batasError < lastMse);
         System.out.println();
         // System.out.println("Last MSE = "+last_mse);
         // System.out.println("Epoch = "+loop);
         labelIterasi.update(labelIterasi.getGraphics());
         labelIterasi.setText(""+loop);
-        labelMse.setText(""+df.format(last_mse));
+        labelMse.setText(""+df.format(lastMse));
         
-        JFreeChart chart = ChartFactory.createLineChart("Grafik Prediksi", "Tahun", "IPM", dataset);
+        JFreeChart chart = ChartFactory.createLineChart("Grafik MSE", "Tahun", "IPM", dataset);
         
         ChartFrame frame = new ChartFrame("Bar Chart", chart);
         frame.setVisible(true);
         frame.setSize(700,550);
         
         // save bobot output
-        for (int j = 0; j < neuron_output; j++) {
-            for (int k = 0; k < neuron_hidden; k++) {
-                helper.writeBobotOutput(w, neuron_output, neuron_hidden, "Biner");
+        for (int j = 0; j < neuronOutput; j++) {
+            for (int k = 0; k < neuronHidden; k++) {
+                helper.writeBobotOutput(w, neuronOutput, neuronHidden, "Biner");
             }
-            helper.writeBiasOutput(wb, neuron_output, "Biner");
+            helper.writeBiasOutput(wb, neuronOutput, "Biner");
         }
 
         // save bobot hidden
-        for (int j = 0; j < neuron_hidden; j++) {
-            for (int k = 0; k < neuron_input; k++) {
-                helper.writeBobotHidden(v, neuron_hidden, neuron_input, "Biner");
+        for (int j = 0; j < neuronHidden; j++) {
+            for (int k = 0; k < neuronInput; k++) {
+                helper.writeBobotHidden(v, neuronHidden, neuronInput, "Biner");
             }
-            helper.writeBiasHidden(vb, neuron_hidden, "Biner");
+            helper.writeBiasHidden(vb, neuronHidden, "Biner");
         }
         
         // save setting
-        double data[] = new double[3];
-        data[0] = neuron_hidden;
+        double data[] = new double[6];
+        data[0] = neuronHidden;
         data[1] = nilaiMin;
         data[2] = nilaiMax;
+        data[3] = lr;
+        data[4] = epoch;
+        data[5] = lastMse;
         
         helper.writeSetting(data, "Biner");
     }
@@ -873,13 +898,13 @@ public class Learning extends javax.swing.JFrame {
         
         // var data setting
         double lr = Double.parseDouble(textLearningRate.getText());
-        int neuron_hidden = Integer.parseInt(textHiddenLayer.getText());
-        int neuron_output = 1;
-        int neuron_input = 5;
+        int neuronHidden = Integer.parseInt(textHiddenLayer.getText());
+        int neuronOutput = 1;
+        int neuronInput = 5;
         int loop = 0;
         int epoch = Integer.parseInt(textEpoch.getText());
-        double target_error = Double.parseDouble(textTargetError.getText());
-        double last_mse;
+        double batasError = Double.parseDouble(textTargetError.getText());
+        double lastMse;
         
         DecimalFormat df = new DecimalFormat("#.########");
         int iterasi = Integer.parseInt(textTampilIterasi.getText());
@@ -891,7 +916,7 @@ public class Learning extends javax.swing.JFrame {
         int count = 0;
         try {
             Statement stm = Connect.getConn().createStatement();
-            ResultSet rsl = stm.executeQuery("select * from datas");;
+            ResultSet rsl = stm.executeQuery("select * from datas");
             
             while (rsl.next()) {
                 xTemp[count][0] = rsl.getDouble("t5");
@@ -961,8 +986,8 @@ public class Learning extends javax.swing.JFrame {
         */
         // Random bobot
         
-        for (int j = 0; j < neuron_hidden; j++) {
-            for (int k = 0; k < neuron_input; k++) {
+        for (int j = 0; j < neuronHidden; j++) {
+            for (int k = 0; k < neuronInput; k++) {
                 v[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
                 // System.out.println("Bobot = ["+j+"]["+k+"]"+v[j][k]);
             }
@@ -970,8 +995,8 @@ public class Learning extends javax.swing.JFrame {
             // System.out.println("Bias = ["+j+"]"+vb[j]);
         }
         
-        for (int j = 0; j < neuron_output; j++) {
-            for (int k = 0; k < neuron_hidden; k++) {
+        for (int j = 0; j < neuronOutput; j++) {
+            for (int k = 0; k < neuronHidden; k++) {
                 w[j][k] = ThreadLocalRandom.current().nextDouble(-1, 1);
                 // System.out.println("Bobot = ["+j+"]["+k+"]"+w[j][k]);
             }
@@ -994,10 +1019,10 @@ public class Learning extends javax.swing.JFrame {
                 
                 // Input layer
                 double z[] = new double[10];
-                for (int j = 0; j < neuron_hidden; j++) {
+                for (int j = 0; j < neuronHidden; j++) {
                     double z_net[] = new double[10];
                     double temp = 0;
-                    for (int k = 0; k < neuron_input; k++) {
+                    for (int k = 0; k < neuronInput; k++) {
                         temp = temp + (x[i][k] * v[j][k]);
                         // System.out.println(x[i][k]+" * "+v[j][k]);
                         // System.out.println(i+" "+k+" = "+x[i][k]);
@@ -1022,11 +1047,11 @@ public class Learning extends javax.swing.JFrame {
 
                 // Output layer
                 double y[] = new double[10];
-                for (int j = 0; j < neuron_output; j++) {
+                for (int j = 0; j < neuronOutput; j++) {
                     double y_net[] = new double[10];
                     double temp = 0;
 
-                    for (int k = 0; k < neuron_hidden; k++) {
+                    for (int k = 0; k < neuronHidden; k++) {
                         temp = temp + (z[k] * w[j][k]);
                         // System.out.println(z[k]+" * "+w[j][k]);
                         // System.out.println(temp);
@@ -1051,13 +1076,13 @@ public class Learning extends javax.swing.JFrame {
                 double Aw[][] = new double[10][10];
                 double Awb[] = new double[10];
 
-                for (int j = 0; j < neuron_output; j++) {
+                for (int j = 0; j < neuronOutput; j++) {
                     // Error y
                     error_y[j] = (t[i] - y[j]) * ((1 + y[j]) * (1 - y[j])/2);
                     // System.out.println("("+t[i]+" - "+y[j]+") ("+y[j]+") (1 - "+y[j]);
                     // System.out.println("Error output = "+error_y[j]);
 
-                    for (int k = 0; k < neuron_hidden; k++) {
+                    for (int k = 0; k < neuronHidden; k++) {
                         // Delta bobot
                         Aw[j][k] = lr * error_y[j] * z[k];
                         // System.out.println("Aw["+j+"]["+k+"] = "+Aw[j][k]);
@@ -1073,8 +1098,8 @@ public class Learning extends javax.swing.JFrame {
                 double Av[][] = new double[10][10];
                 double Avb[] = new double[10];
 
-                for (int j = 0; j < neuron_hidden; j++) {
-                    for (int k = 0; k < neuron_output; k++) {
+                for (int j = 0; j < neuronHidden; j++) {
+                    for (int k = 0; k < neuronOutput; k++) {
                         // faktor kesalahan y_net
                         error_ynet[j] = error_y[k] * w[k][j];
                         // System.out.println("Error y_net = "+error_ynet[j]);
@@ -1083,7 +1108,7 @@ public class Learning extends javax.swing.JFrame {
                     error_z[j] = error_ynet[j] * ((1 + y[j]) * (1 - y[j])/2);
                     // System.out.println("Error z = "+error_z[j]);
 
-                    for (int k = 0; k < neuron_input; k++) {
+                    for (int k = 0; k < neuronInput; k++) {
                         // Suku perubahan bobot hidden
                         Av[k][j] = lr * error_z[j] * x[i][k];
                         // System.out.println("Av["+k+"]["+j+"] = "+Av[k][j]);
@@ -1096,8 +1121,8 @@ public class Learning extends javax.swing.JFrame {
                 }
 
                 // update bobot output
-                for (int j = 0; j < neuron_output; j++) {
-                    for (int k = 0; k < neuron_hidden; k++) {
+                for (int j = 0; j < neuronOutput; j++) {
+                    for (int k = 0; k < neuronHidden; k++) {
                         // update z
                         w[j][k] = w[j][k] + Aw[j][k];
                         // System.out.println("Bobot output = "+Aw[j][k]+" = "+w[j][k]);
@@ -1118,8 +1143,8 @@ public class Learning extends javax.swing.JFrame {
                 }
                 
                 // update bobot hidden
-                for (int j = 0; j < neuron_hidden; j++) {
-                    for (int k = 0; k < neuron_input; k++) {
+                for (int j = 0; j < neuronHidden; j++) {
+                    for (int k = 0; k < neuronInput; k++) {
                         // update z
                         v[j][k] = v[j][k] + Av[k][j];
                         // System.out.println("Bobot Hidden = "+Av[k][j]+" = "+v[k][j]);
@@ -1149,47 +1174,50 @@ public class Learning extends javax.swing.JFrame {
             textAreaMse.append("MSE ["+loop+"] = "+df.format(mse)+"\n");
         }
         
-        last_mse = mse;
+        lastMse = mse;
         loop++;
         
         // for graph
         dataset.setValue(new Double(mse), "Values", new Integer(loop));
         
-        } while (loop < epoch && target_error < last_mse);
+        } while (loop < epoch && batasError < lastMse);
         System.out.println();
         // System.out.println("Last MSE = "+last_mse);
         // System.out.println("Epoch = "+loop);
         labelIterasi.update(labelIterasi.getGraphics());
         labelIterasi.setText(""+loop);
-        labelMse.setText(""+df.format(last_mse));
+        labelMse.setText(""+df.format(lastMse));
         
-        JFreeChart chart = ChartFactory.createLineChart("Grafik Prediksi", "Tahun", "IPM", dataset);
+        JFreeChart chart = ChartFactory.createLineChart("Grafik MSE", "Tahun", "IPM", dataset);
         
         ChartFrame frame = new ChartFrame("Bar Chart", chart);
         frame.setVisible(true);
         frame.setSize(700,550);
         
         // save bobot output
-        for (int j = 0; j < neuron_output; j++) {
-            for (int k = 0; k < neuron_hidden; k++) {
-                helper.writeBobotOutput(w, neuron_output, neuron_hidden, "Bipolar");
+        for (int j = 0; j < neuronOutput; j++) {
+            for (int k = 0; k < neuronHidden; k++) {
+                helper.writeBobotOutput(w, neuronOutput, neuronHidden, "Bipolar");
             }
-            helper.writeBiasOutput(wb, neuron_output, "Bipolar");
+            helper.writeBiasOutput(wb, neuronOutput, "Bipolar");
         }
 
         // save bobot hidden
-        for (int j = 0; j < neuron_hidden; j++) {
-            for (int k = 0; k < neuron_input; k++) {
-                helper.writeBobotHidden(v, neuron_hidden, neuron_input, "Bipolar");
+        for (int j = 0; j < neuronHidden; j++) {
+            for (int k = 0; k < neuronInput; k++) {
+                helper.writeBobotHidden(v, neuronHidden, neuronInput, "Bipolar");
             }
-            helper.writeBiasHidden(vb, neuron_hidden, "Bipolar");
+            helper.writeBiasHidden(vb, neuronHidden, "Bipolar");
         }
         
         // save setting
-        double data[] = new double[3];
-        data[0] = neuron_hidden;
+        double data[] = new double[6];
+        data[0] = neuronHidden;
         data[1] = nilaiMin;
         data[2] = nilaiMax;
+        data[3] = lr;
+        data[4] = epoch;
+        data[5] = lastMse;
         
         helper.writeSetting(data, "Bipolar");
     }
@@ -1262,6 +1290,64 @@ public class Learning extends javax.swing.JFrame {
         }
     }
     
+    private void saveBobot() {
+        String selectedAktivasi = (String) comboAktivasi.getSelectedItem();
+        String aktivasi = "";
+        
+        if ("Sigmoid Biner".equals(selectedAktivasi)) {
+            aktivasi = "Biner";
+        } else if ("Sigmoid Bipolar".equals(selectedAktivasi)) {
+            aktivasi = "Bipolar";
+        }
+        
+        int neuronInput = 5;
+        int neuronOutput = 1;
+        DecimalFormat df = new DecimalFormat("#.########");
+        DecimalFormat dfone = new DecimalFormat("#");
+        Helper helper = new Helper();
+        double setting[] = helper.readSetting(aktivasi);
+        double neuronHidden = setting[0];
+        double bobotHidden[][] = helper.readBobotHidden(neuronHidden, neuronInput, aktivasi);
+        double bobotOutput[][] = helper.readBobotOutput(neuronOutput, neuronHidden, aktivasi);
+        double biasHidden[] = helper.readBiasHidden(aktivasi);
+        double biasOutput[] = helper.readBiasOutput(aktivasi);       
+        
+        int id = helper.autoNumber() + 1;
+        
+        try {
+            Statement stm;
+            stm = Connect.getConn().createStatement();
+            // stm.executeUpdate("select id form learnings");
+            stm.executeUpdate("insert into learnings values('"+
+                    id+"','5-"+dfone.format(setting[0])+"-1','"+setting[3]+"','"+setting[4]+"','"+df.format(setting[5])+"','0','0','"+aktivasi+"')");
+            stm.close();
+            JOptionPane.showMessageDialog(rootPane, "Bobot pelatihan berhasil disimpan");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Data Gagal Disimpan\n"+e.toString());
+        }
+        
+        // save bobot output
+        for (int j = 0; j < neuronOutput; j++) {
+            for (int k = 0; k < neuronHidden; k++) {
+                helper.saveBobotOutput(bobotOutput, neuronOutput, neuronHidden, aktivasi, id);
+            }
+            helper.saveBiasOutput(biasOutput, neuronOutput, aktivasi, id);
+        }
+
+        // save bobot hidden
+        for (int j = 0; j < neuronHidden; j++) {
+            for (int k = 0; k < neuronInput; k++) {
+                helper.saveBobotHidden(bobotHidden, neuronHidden, neuronInput, aktivasi, id);
+            }
+            helper.saveBiasHidden(biasHidden, neuronHidden, aktivasi, id);
+        }
+        
+        // save setting
+        for (int i = 0; i < 6; i++) {
+            helper.saveSetting(setting, aktivasi, id);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1301,6 +1387,7 @@ public class Learning extends javax.swing.JFrame {
     private javax.swing.JButton buttonLatih;
     private javax.swing.JButton buttonReset;
     private javax.swing.JComboBox<String> comboAktivasi;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
