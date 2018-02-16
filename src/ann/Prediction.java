@@ -5,6 +5,7 @@
  */
 package ann;
 
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -142,6 +143,12 @@ public class Prediction extends javax.swing.JFrame {
         jLabel5.setText("ID");
 
         textID.setEditable(false);
+
+        textTahun.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTahunKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -335,7 +342,11 @@ public class Prediction extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonPrediksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPrediksiActionPerformed
-        predict();
+        if(textTahun.getText().equals("")){
+            JOptionPane.showMessageDialog(rootPane, "Data tidak boleh kosong", "Peringatan", JOptionPane.ERROR_MESSAGE);
+        } else {
+            predict();
+        }
     }//GEN-LAST:event_buttonPrediksiActionPerformed
 
     private void tableHasilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableHasilMouseClicked
@@ -356,6 +367,13 @@ public class Prediction extends javax.swing.JFrame {
             getSelectedData(data);
         }
     }//GEN-LAST:event_comboDataActionPerformed
+
+    private void textTahunKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTahunKeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTahunKeyTyped
 
     /**
      * @param args the command line arguments

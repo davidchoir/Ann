@@ -374,6 +374,9 @@
               <Font name="Calibri" size="14" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textTahunKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="textT5">
           <Properties>
@@ -381,6 +384,9 @@
               <Font name="Calibri" size="14" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textT5KeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="textT4">
           <Properties>
@@ -388,6 +394,9 @@
               <Font name="Calibri" size="14" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textT4KeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="textT3">
           <Properties>
@@ -395,6 +404,9 @@
               <Font name="Calibri" size="14" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textT3KeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="textT2">
           <Properties>
@@ -402,6 +414,9 @@
               <Font name="Calibri" size="14" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textT2KeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="textT1">
           <Properties>
@@ -409,6 +424,9 @@
               <Font name="Calibri" size="14" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textT1KeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="textTarget">
           <Properties>
@@ -416,6 +434,9 @@
               <Font name="Calibri" size="14" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textTargetKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonHapus">
           <Properties>

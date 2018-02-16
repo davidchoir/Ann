@@ -5,7 +5,6 @@
  */
 package ann;
 
-import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -212,8 +211,8 @@ public class Testing extends javax.swing.JFrame {
                 tbDataPrediksi.addRow(obj);
                 
                 // for graph
-                dataset.setValue(new Double(rsl.getString("target")), "Target", new Integer(count));
-                dataset.setValue(new Double(df.format(prediksi[count])), "Prediksi", new Integer(count));
+                dataset.setValue(new Double(rsl.getString("target")), "Target", new Integer(rsl.getString("tahun")));
+                dataset.setValue(new Double(df.format(prediksi[count])), "Prediksi", new Integer(rsl.getString("tahun")));
                 
                 count++;
             }
@@ -224,7 +223,7 @@ public class Testing extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Gagal Menampilkan Data\n"+e.toString());
         }
         
-        JFreeChart chart = ChartFactory.createLineChart("Grafik MSE", "Epoch", "Nilai MSE", dataset);
+        JFreeChart chart = ChartFactory.createLineChart("Grafik Hasil Pengujian", "Tahun", "Nilai IPM", dataset);
         
         ChartFrame frame = new ChartFrame("Bar Chart", chart);
         frame.setVisible(true);
@@ -701,7 +700,11 @@ public class Testing extends javax.swing.JFrame {
     }//GEN-LAST:event_tableHasilMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        deleteData();
+        int pilih = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin ingin menghapus data?", "Konfirmasi", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+        
+        if (pilih == 0) {
+            deleteData();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

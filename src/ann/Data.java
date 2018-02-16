@@ -5,6 +5,7 @@
  */
 package ann;
 
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -177,18 +178,53 @@ public class Data extends javax.swing.JFrame {
         comboKategori.setToolTipText("Kategori Data");
 
         textTahun.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        textTahun.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTahunKeyTyped(evt);
+            }
+        });
 
         textT5.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        textT5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textT5KeyTyped(evt);
+            }
+        });
 
         textT4.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        textT4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textT4KeyTyped(evt);
+            }
+        });
 
         textT3.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        textT3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textT3KeyTyped(evt);
+            }
+        });
 
         textT2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        textT2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textT2KeyTyped(evt);
+            }
+        });
 
         textT1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        textT1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textT1KeyTyped(evt);
+            }
+        });
 
         textTarget.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        textTarget.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTargetKeyTyped(evt);
+            }
+        });
 
         buttonHapus.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         buttonHapus.setText("Hapus");
@@ -464,11 +500,19 @@ public class Data extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimpanActionPerformed
-        saveData();
+        if(textTahun.getText().equals("") || textT5.getText().equals("") || textT4.getText().equals("") || textT3.getText().equals("") || textT2.getText().equals("") || textT1.getText().equals("") || textTarget.getText().equals("")){
+            JOptionPane.showMessageDialog(rootPane, "Data tidak boleh kosong", "Peringatan", JOptionPane.ERROR_MESSAGE);
+        } else {
+            saveData();
+        }
     }//GEN-LAST:event_buttonSimpanActionPerformed
 
     private void buttonHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonHapusActionPerformed
-        deleteData();
+        int pilih = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin ingin menghapus data?", "Konfirmasi", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+        
+        if (pilih == 0) {
+            deleteData();
+        }
     }//GEN-LAST:event_buttonHapusActionPerformed
 
     private void buttonUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUbahActionPerformed
@@ -518,6 +562,55 @@ public class Data extends javax.swing.JFrame {
     private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
         resetField();
     }//GEN-LAST:event_buttonResetActionPerformed
+
+    private void textTahunKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTahunKeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTahunKeyTyped
+
+    private void textT5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textT5KeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textT5KeyTyped
+
+    private void textT4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textT4KeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textT4KeyTyped
+
+    private void textT3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textT3KeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textT3KeyTyped
+
+    private void textT2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textT2KeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textT2KeyTyped
+
+    private void textT1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textT1KeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textT1KeyTyped
+
+    private void textTargetKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTargetKeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTargetKeyTyped
 
     /**
      * @param args the command line arguments

@@ -5,6 +5,7 @@
  */
 package ann;
 
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -134,19 +135,42 @@ public class Learning extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Neuron Hidden");
 
+        textHiddenLayer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textHiddenLayerKeyTyped(evt);
+            }
+        });
+
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Jumlah Iterasi");
 
+        textEpoch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textEpochKeyTyped(evt);
+            }
+        });
+
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Batas MSE");
+
+        textTargetError.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTargetErrorKeyTyped(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Tampil Per Iterasi");
 
         textTampilIterasi.setText("1");
+        textTampilIterasi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTampilIterasiKeyTyped(evt);
+            }
+        });
 
         buttonLatih.setText("Latih");
         buttonLatih.addActionListener(new java.awt.event.ActionListener() {
@@ -185,6 +209,12 @@ public class Learning extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Learning Rate");
+
+        textLearningRate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textLearningRateKeyTyped(evt);
+            }
+        });
 
         buttonReset.setText("Reset");
         buttonReset.addActionListener(new java.awt.event.ActionListener() {
@@ -508,13 +538,17 @@ public class Learning extends javax.swing.JFrame {
     private void buttonLatihActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLatihActionPerformed
         String aktivasi = (String) comboAktivasi.getSelectedItem();
         
-        if ("Sigmoid Biner".equals(aktivasi)) {
-            resetData();
-            sigmoidBiner();
-        } else if ("Sigmoid Bipolar".equals(aktivasi)) {
-            resetData();
-            sigmoidBipolar();
-        }
+        if (textHiddenLayer.getText().equals("") || textEpoch.getText().equals("") || textLearningRate.getText().equals("") || textTargetError.getText().equals("") || textTampilIterasi.getText().equals("")){
+            JOptionPane.showMessageDialog(rootPane, "Data tidak boleh kosong", "Peringatan", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if ("Sigmoid Biner".equals(aktivasi)) {
+                resetData();
+                sigmoidBiner();
+            } else if ("Sigmoid Bipolar".equals(aktivasi)) {
+                resetData();
+                sigmoidBipolar();
+            }
+        }    
     }//GEN-LAST:event_buttonLatihActionPerformed
 
     private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
@@ -528,6 +562,41 @@ public class Learning extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         saveBobot();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void textHiddenLayerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textHiddenLayerKeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textHiddenLayerKeyTyped
+
+    private void textEpochKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textEpochKeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textEpochKeyTyped
+
+    private void textLearningRateKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textLearningRateKeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textLearningRateKeyTyped
+
+    private void textTargetErrorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTargetErrorKeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_PERIOD)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTargetErrorKeyTyped
+
+    private void textTampilIterasiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTampilIterasiKeyTyped
+        char karakter = evt.getKeyChar();
+        if (!((Character.isDigit(karakter)||(karakter == KeyEvent.VK_BACK_SPACE) || (karakter == KeyEvent.VK_DELETE)))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTampilIterasiKeyTyped
 
     private void sigmoidBiner() {
         // var data learning
