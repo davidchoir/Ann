@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 28, 2018 at 11:30 AM
+-- Generation Time: Feb 25, 2018 at 02:40 PM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -78,14 +78,25 @@ CREATE TABLE IF NOT EXISTS `learnings` (
   `akurasi_uji` double NOT NULL,
   `aktivasi` enum('Biner','Bipolar') NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `learnings`
 --
 
 INSERT INTO `learnings` (`id`, `arsitektur`, `lr`, `epoch`, `mse`, `akurasi_latih`, `akurasi_uji`, `aktivasi`) VALUES
-(1, '5-3-1', 0.1, 1000, 0.00365803, 99.43, 98.38, 'Biner');
+(1, '5-3-1', 0.1, 10000, 0.00140892, 99.6, 98.56, 'Biner'),
+(2, '5-3-1', 0.1, 10000, 0.00080686, 99.85, 98.79, 'Bipolar'),
+(3, '5-3-1', 0.01, 10000, 0.00365197, 99.4, 98.21, 'Biner'),
+(4, '5-3-1', 0.01, 10000, 0.00636391, 99.57, 98.57, 'Bipolar'),
+(5, '5-6-1', 0.1, 10000, 0.00121521, 99.64, 98.69, 'Biner'),
+(6, '5-6-1', 0.1, 10000, 0.00305164, 99.72, 99.13, 'Bipolar'),
+(7, '5-6-1', 0.01, 10000, 0.00441266, 99.39, 98.4, 'Biner'),
+(8, '5-6-1', 0.01, 10000, 0.00481516, 99.61, 98.47, 'Bipolar'),
+(9, '5-9-1', 0.1, 10000, 0.00116075, 99.64, 98.73, 'Biner'),
+(10, '5-9-1', 0.1, 10000, 0.00385234, 99.68, 98.91, 'Bipolar'),
+(11, '5-9-1', 0.01, 10000, 0.00375027, 99.4, 98.24, 'Biner'),
+(12, '5-9-1', 0.01, 10000, 0.00397927, 99.66, 98.87, 'Bipolar');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
